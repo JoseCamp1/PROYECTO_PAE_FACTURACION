@@ -3,7 +3,7 @@ INA Proyecto del Módulo Programación de Aplicaciones Empresariales en Ambiente
 
 # Sistema de Facturación para una Panadería 
 
-Este proyecto de Sistema de Facturación de la Panadería se ha desarrollado como parte de un proceso de aprendizaje en programación Java, SQL y HTML. El objetivo principal es crear una aplicación que permita gestionar las operaciones de facturación de una panadería de manera efectiva y eficiente.
+Este proyecto de Sistema de Facturación para una Panadería se ha desarrollado como parte de un proceso de aprendizaje en programación Java, SQL y HTML. El objetivo principal es crear una aplicación que permita gestionar las operaciones de facturación de una panadería de manera efectiva y eficiente.
 
 ## Descripción
 
