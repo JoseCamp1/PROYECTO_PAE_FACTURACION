@@ -31,37 +31,39 @@ GO
 -- TABLA DE CLIENTES
 CREATE TABLE CLIENTES (
     ID_CLIENTE INT PRIMARY KEY IDENTITY(1,1),
-    NOMBRE_COMPLETO VARCHAR(100),
-    CEDULA VARCHAR(9)    
+    NOMBRE_COMPLETO VARCHAR(100) NOT NULL,
+    CEDULA VARCHAR(9) UNIQUE NOT NULL   
 );
 
 -- TABLA DE VENDEDORES
 CREATE TABLE VENDEDORES (
     ID_VENDEDOR INT PRIMARY KEY IDENTITY(1,1),
-    NOMBRE_COMPLETO VARCHAR(100),
-    CEDULA VARCHAR(9),    
-    CORREO_ELECTRONICO VARCHAR(100),    
+    NOMBRE_COMPLETO VARCHAR(100) NOT NULL,
+    CEDULA VARCHAR(9) UNIQUE NOT NULL,    
+    CORREO_ELECTRONICO VARCHAR(100) NOT NULL,    
 );
 
 -- TABLA DE PRODUCTOS
 CREATE TABLE PRODUCTOS (
     ID_PRODUCTO INT PRIMARY KEY IDENTITY(1,1),
-    NOMBRE VARCHAR(100),
-    DESCRIPCION VARCHAR(500),
-    PRECIO DECIMAL(10, 2),
-    STOCK INT
+    NOMBRE VARCHAR(100) NOT NULL,
+    DESCRIPCION VARCHAR(500) NOT NULL,
+    PRECIO DECIMAL(10, 2) CHECK (PRECIO >= 0) NOT NULL,
+    STOCK INT CHECK (STOCK >= 0) NOT NULL
 );
 
 -- TABLA DE VENTAS
 CREATE TABLE VENTAS (
     ID_VENTA INT PRIMARY KEY IDENTITY(1,1),
-    METODOPAGO VARCHAR(50),
-    FECHA DATE,
+    METODOPAGO VARCHAR(50) DEFAULT 'Efectivo',
+    FECHA DATE DEFAULT GETDATE(),
     ID_CLIENTE INT,	
     ID_VENDEDOR INT, 
-    TOTAL DECIMAL(10, 2),
+    TOTAL DECIMAL(10, 2) CHECK (TOTAL >= 0) NOT NULL,
     FOREIGN KEY (ID_CLIENTE) REFERENCES CLIENTES(ID_CLIENTE),
-    FOREIGN KEY (ID_VENDEDOR) REFERENCES VENDEDORES(ID_VENDEDOR)
+    FOREIGN KEY (ID_VENDEDOR) REFERENCES VENDEDORES(ID_VENDEDOR),
+	CONSTRAINT CHK_METODOPAGO
+        CHECK (METODOPAGO IN ('Simpe', 'Efectivo', 'Tarjeta'))
 );
 
 -- TABLA DE DETALLE DE VENTAS
@@ -69,8 +71,8 @@ CREATE TABLE DETALLE_VENTAS (
     ID_DETALLE INT PRIMARY KEY IDENTITY(1,1),
     ID_VENTA INT,
     ID_PRODUCTO INT,
-    CANTIDAD INT,
-    SUBTOTAL DECIMAL(10, 2),
+    CANTIDAD INT CHECK (CANTIDAD >= 0) NOT NULL,
+    SUBTOTAL DECIMAL(10, 2) CHECK (SUBTOTAL >= 0) NOT NULL,
     FOREIGN KEY (ID_VENTA) REFERENCES VENTAS(ID_VENTA),
     FOREIGN KEY (ID_PRODUCTO) REFERENCES PRODUCTOS(ID_PRODUCTO)
 );
@@ -78,9 +80,9 @@ CREATE TABLE DETALLE_VENTAS (
 -- TABLA DE COMPRAS
 CREATE TABLE COMPRAS (
     ID_COMPRA INT PRIMARY KEY IDENTITY(1,1),
-    FECHA DATE,
-    PROVEEDOR VARCHAR(100),
-    TOTAL DECIMAL(10, 2)
+    FECHA DATE DEFAULT GETDATE(),
+    PROVEEDOR VARCHAR(100) NOT NULL,
+    TOTAL DECIMAL(10, 2) CHECK (TOTAL >= 0) NOT NULL
 );
 
 -- TABLA DE DETALLE DE COMPRAS
@@ -88,12 +90,87 @@ CREATE TABLE DETALLE_COMPRAS (
     ID_DETALLE INT PRIMARY KEY IDENTITY(1,1),
     ID_COMPRA INT,
     ID_PRODUCTO INT,
-    CANTIDAD INT,
-    PRECIO_UNITARIO DECIMAL(10, 2),
-    SUBTOTAL DECIMAL(10, 2),
+    CANTIDAD INT CHECK (CANTIDAD >= 0) NOT NULL,
+    PRECIO_UNITARIO DECIMAL(10, 2) CHECK (PRECIO_UNITARIO >= 0) NOT NULL,
+    SUBTOTAL DECIMAL(10, 2) CHECK (SUBTOTAL >= 0) NOT NULL,
     FOREIGN KEY (ID_COMPRA) REFERENCES COMPRAS(ID_COMPRA),
     FOREIGN KEY (ID_PRODUCTO) REFERENCES PRODUCTOS(ID_PRODUCTO)
 );
+
+
+----------------------
+-- INGRESO DE DATOS --
+----------------------
+
+-- Insertar datos en la tabla CLIENTES
+INSERT INTO CLIENTES (NOMBRE_COMPLETO, CEDULA) VALUES
+('Juan Pérez', '123456789'),
+('Ana Sánchez', '987654321'),
+('María Rodríguez', '555555555'),
+('Pedro Gómez', '111111111'),
+('Luisa Fernández', '222222222');
+
+-- Insertar datos en la tabla VENDEDORES
+INSERT INTO VENDEDORES (NOMBRE_COMPLETO, CEDULA, CORREO_ELECTRONICO) VALUES
+('Carlos González', '999999999', 'carlos@example.com'),
+('Laura Martínez', '888888888', 'laura@example.com'),
+('Javier Ramírez', '777777777', 'javier@example.com'),
+('Sofía López', '666666666', 'sofia@example.com'),
+('Roberto Herrera', '555555555', 'roberto@example.com');
+
+
+-- Insertar datos en la tabla PRODUCTOS
+INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK) VALUES
+('Pan Integral', 'Pan integral de trigo', 2.99, 100),
+('Pan de Avena', 'Pan de avena con pasas', 3.49, 75),
+('Croissant', 'Croissant recién horneado', 1.99, 50),
+('Rosquillas', 'Rosquillas glaseadas', 0.99, 120),
+('Baguette', 'Baguette crujiente', 2.49, 80);
+
+
+-- Insertar datos en la tabla VENTAS
+INSERT INTO VENTAS (METODOPAGO, FECHA, ID_CLIENTE, ID_VENDEDOR, TOTAL) VALUES
+('Tarjeta', '2023-09-01', 1, 1, 15.99),
+('Efectivo', '2023-09-02', 2, 2, 12.49),
+('Simpe', '2023-09-03', 3, 3, 7.99),
+('Tarjeta', '2023-09-04', 4, 4, 5.99),
+('Efectivo', '2023-09-05', 5, 5, 10.49);
+
+
+-- Insertar datos en la tabla DETALLE_VENTAS
+INSERT INTO DETALLE_VENTAS (ID_VENTA, ID_PRODUCTO, CANTIDAD, SUBTOTAL) VALUES
+(1, 1, 3, 8.97),
+(1, 3, 2, 3.98),
+(2, 2, 1, 3.49),
+(3, 4, 4, 23.96),
+(4, 5, 2, 4.98);
+
+
+-- Insertar datos en la tabla COMPRAS
+INSERT INTO COMPRAS (FECHA, PROVEEDOR, TOTAL) VALUES
+('2023-09-01', 'Proveedor A', 50.25),
+('2023-09-02', 'Proveedor B', 35.50),
+('2023-09-03', 'Proveedor C', 75.30),
+('2023-09-04', 'Proveedor D', 42.75),
+('2023-09-05', 'Proveedor E', 28.90);
+
+
+-- Insertar datos en la tabla DETALLE_COMPRAS
+INSERT INTO DETALLE_COMPRAS (ID_COMPRA, ID_PRODUCTO, CANTIDAD, PRECIO_UNITARIO, SUBTOTAL) VALUES
+(1, 1, 10, 2.50, 25.00),
+(1, 2, 5, 3.00, 15.00),
+(2, 3, 3, 5.25, 15.75),
+(3, 4, 8, 2.85, 22.80),
+(4, 5, 6, 4.50, 27.00);
+
+GO
+SELECT * FROM CLIENTES
+SELECT * FROM VENDEDORES
+SELECT * FROM VENTAS
+SELECT * FROM DETALLE_COMPRAS
+SELECT * FROM COMPRAS
+SELECT * FROM DETALLE_COMPRAS
+SELECT * FROM PRODUCTOS
 
 --------------------------------
 -- PROCEDIMIENTOS ALMACENADOS --
@@ -657,7 +734,6 @@ GO
 -- TRIGGERS --
 --------------
 
--- PD: AUN NO ESTOY SEGURO SI LOS USARE!!!
 
 -- Este trigger se ejecutará después de insertar un nuevo registro en DETALLE_VENTAS y reducirá la cantidad de stock del producto correspondiente en la tabla PRODUCTOS.
 CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_STOCK_VENTAS
@@ -715,70 +791,7 @@ BEGIN
 END;
 GO
 
-----------------------
--- INGRESO DE DATOS --
-----------------------
 
--- Insertar datos en la tabla CLIENTES
-INSERT INTO CLIENTES (NOMBRE_COMPLETO, CEDULA) VALUES
-('Juan Pérez', '123456789'),
-('Ana Sánchez', '987654321'),
-('María Rodríguez', '555555555'),
-('Pedro Gómez', '111111111'),
-('Luisa Fernández', '222222222');
-
--- Insertar datos en la tabla VENDEDORES
-INSERT INTO VENDEDORES (NOMBRE_COMPLETO, CEDULA, CORREO_ELECTRONICO) VALUES
-('Carlos González', '999999999', 'carlos@example.com'),
-('Laura Martínez', '888888888', 'laura@example.com'),
-('Javier Ramírez', '777777777', 'javier@example.com'),
-('Sofía López', '666666666', 'sofia@example.com'),
-('Roberto Herrera', '555555555', 'roberto@example.com');
-
-
--- Insertar datos en la tabla PRODUCTOS
-INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK) VALUES
-('Pan Integral', 'Pan integral de trigo', 2.99, 100),
-('Pan de Avena', 'Pan de avena con pasas', 3.49, 75),
-('Croissant', 'Croissant recién horneado', 1.99, 50),
-('Rosquillas', 'Rosquillas glaseadas', 0.99, 120),
-('Baguette', 'Baguette crujiente', 2.49, 80);
-
-
--- Insertar datos en la tabla VENTAS
-INSERT INTO VENTAS (METODOPAGO, FECHA, ID_CLIENTE, ID_VENDEDOR, TOTAL) VALUES
-('Tarjeta de Crédito', '2023-09-01', 1, 1, 15.99),
-('Efectivo', '2023-09-02', 2, 2, 12.49),
-('Efectivo', '2023-09-03', 3, 3, 7.99),
-('Tarjeta de Débito', '2023-09-04', 4, 4, 5.99),
-('Efectivo', '2023-09-05', 5, 5, 10.49);
-
-
--- Insertar datos en la tabla DETALLE_VENTAS
-INSERT INTO DETALLE_VENTAS (ID_VENTA, ID_PRODUCTO, CANTIDAD, SUBTOTAL) VALUES
-(1, 1, 3, 8.97),
-(1, 3, 2, 3.98),
-(2, 2, 1, 3.49),
-(3, 4, 4, 23.96),
-(4, 5, 2, 4.98);
-
-
--- Insertar datos en la tabla COMPRAS
-INSERT INTO COMPRAS (FECHA, PROVEEDOR, TOTAL) VALUES
-('2023-09-01', 'Proveedor A', 50.25),
-('2023-09-02', 'Proveedor B', 35.50),
-('2023-09-03', 'Proveedor C', 75.30),
-('2023-09-04', 'Proveedor D', 42.75),
-('2023-09-05', 'Proveedor E', 28.90);
-
-
--- Insertar datos en la tabla DETALLE_COMPRAS
-INSERT INTO DETALLE_COMPRAS (ID_COMPRA, ID_PRODUCTO, CANTIDAD, PRECIO_UNITARIO, SUBTOTAL) VALUES
-(1, 1, 10, 2.50, 25.00),
-(1, 2, 5, 3.00, 15.00),
-(2, 3, 3, 5.25, 15.75),
-(3, 4, 8, 2.85, 22.80),
-(4, 5, 6, 4.50, 27.00);
 
 ----------------------
 -- HACIENDO PRUEBAS --
@@ -836,10 +849,3 @@ EXEC RESUMIR_VENTAS;
 
 GO
 
-SELECT * FROM CLIENTES
-SELECT * FROM VENDEDORES
-SELECT * FROM VENTAS
-SELECT * FROM DETALLE_COMPRAS
-SELECT * FROM COMPRAS
-SELECT * FROM DETALLE_COMPRAS
-SELECT * FROM PRODUCTOS
