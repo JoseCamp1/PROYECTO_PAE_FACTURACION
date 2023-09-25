@@ -1,5 +1,5 @@
 ---------------------------------------------
--- PROYECTO F1                             --
+-- PROYECTO F2                             --
 -- MODULO:PAE                              --
 -- PROFESOR:LUIS ALONSO BOGANTES RODRIGUEZ --
 -- ESTUDIANTE:JOSE JOAQUIN CAMPOS CHAVES   --

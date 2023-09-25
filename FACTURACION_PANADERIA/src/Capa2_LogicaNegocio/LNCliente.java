@@ -47,9 +47,9 @@ public class LNCliente {
             adcliente=new ADCliente();
             resultado=adcliente.ObtenerRegistro(condicion);
             if (resultado.isExiste()) {
-                _mensaje="Cliente Recuperado exitosamente";
+                _mensaje="Recuperado exitosamente";
             }else{
-                _mensaje="El cliente no existe";
+                _mensaje="El registro no existe";
             }
         } catch (Exception e) {
             throw e;

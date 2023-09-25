@@ -4,10 +4,10 @@ package Capa_Entidades;
 // Definición de la clase abstracta Persona
 public abstract class Persona {
     // Atributos
-    protected int id;
-    protected String nombre;
-    protected String cedula;
-    protected boolean existe;
+    private int id;
+    private String nombre;
+    private String cedula;
+    private boolean existe;
     
     //Constructores
 

@@ -26,6 +26,7 @@ public class frmMenu extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mnuClientes = new javax.swing.JMenuItem();
         mnuVendedores = new javax.swing.JMenuItem();
+        mnuVentas = new javax.swing.JMenuItem();
         mnuSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,8 +55,22 @@ public class frmMenu extends javax.swing.JFrame {
         });
         jMenu1.add(mnuClientes);
 
+        mnuVendedores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuVendedores.setText("Vendedores");
+        mnuVendedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuVendedoresActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnuVendedores);
+
+        mnuVentas.setText("Ventas");
+        mnuVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuVentasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuVentas);
 
         mnuSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuSalir.setText("Salir");
@@ -102,6 +117,32 @@ public class frmMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_mnuSalirActionPerformed
 
+    private void mnuVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuVendedoresActionPerformed
+       frmVendedores frm = new frmVendedores();
+        escritorio.add(frm);
+        //entrar el formulario clientes
+        //tamano de la ventana contenedor
+        Dimension sizeContenedor = escritorio.getSize();
+        //tamano de la ventana clientes
+        Dimension sizeFrmVendedores = frm.getSize();
+        frm.setLocation(((int)sizeContenedor.getWidth()-(int)sizeFrmVendedores.getWidth())/2,((int)sizeContenedor.getHeight()-(int)sizeFrmVendedores.getHeight())/2);
+        frm.toFront();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuVendedoresActionPerformed
+
+    private void mnuVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuVentasActionPerformed
+         frmVentas frm = new frmVentas();
+        escritorio.add(frm);
+        //entrar el formulario clientes
+        //tamano de la ventana contenedor
+        Dimension sizeContenedor = escritorio.getSize();
+        //tamano de la ventana clientes
+        Dimension sizeFrmVentas = frm.getSize();
+        frm.setLocation(((int)sizeContenedor.getWidth()-(int)sizeFrmVentas.getWidth())/2,((int)sizeContenedor.getHeight()-(int)sizeFrmVentas.getHeight())/2);
+        frm.toFront();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuVentasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -144,5 +185,6 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuClientes;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenuItem mnuVendedores;
+    private javax.swing.JMenuItem mnuVentas;
     // End of variables declaration//GEN-END:variables
 }

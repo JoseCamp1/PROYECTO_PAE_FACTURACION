@@ -1,6 +1,6 @@
 package Capa3_AccesoDatos;
 
-import Capa_Entidades.Cliente;
+import Capa_Entidades.Ventas;
 import Config.Config;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,15 +10,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.Instant;
+import java.util.Date;
 
-
-public class ADCliente {
-    //atributos
+public class ADVentas {
+     //atributos
     private Connection _cnn;
     private String _mensaje;
     
-    //constructor
-    public ADCliente() throws Exception{
+     //constructor
+    public ADVentas() throws Exception{
         try {
             String url = Config.getConnectionString();            
             _cnn = DriverManager.getConnection(url);
@@ -33,22 +34,24 @@ public class ADCliente {
         return _mensaje;
     }
     
-    // metodos
+     // metodos
     
     //-----------------------------------------------------------------------------------------------------------------------------------
-    public int Insertar(Cliente cliente) throws Exception {
+    public int Insertar(Ventas ventas) throws Exception {
         int id_cliente = -1;
-        String sentencia = "INSERT INTO CLIENTES(NOMBRE_COMPLETO,CEDULA) VALUES (?,?)";
+        String sentencia = "INSERT INTO VENTAS(METODOPAGO,FECHA,ID_CLIENTE,ID_VENDEDOR,TOTAL) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement ps = _cnn.prepareStatement(sentencia, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, cliente.getNombre());
-            ps.setString(2, cliente.getCedula());
+            ps.setString(1, ventas.getMetodoPago());
+            ps.setDate(2, ventas.getFecha());
+            ps.setInt(3, ventas.getId_Cliente());
+            ps.setInt(4, ventas.getId_Vendedor());
+            ps.setFloat(5, ventas.getTotal());
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs != null && rs.next()) {
                 id_cliente = rs.getInt(1);
-                _mensaje = "Cliente ingresado satisfactoriamente";
-
+                _mensaje = "Ingresado satisfactoriamente";
             }
         } catch (SQLException e) {
             throw e;
@@ -57,19 +60,20 @@ public class ADCliente {
         }
         return id_cliente;
     }   
+    
     //-----------------------------------------------------------------------------------------------------------------------------------
-     public List<Cliente> ListarRegistros(String condicion) throws SQLException {
+     public List<Ventas> ListarRegistros(String condicion) throws SQLException {
         ResultSet rs = null;
-        List<Cliente> lista = new ArrayList();
+        List<Ventas> lista = new ArrayList();
         try {
             Statement stm = _cnn.createStatement();
-            String sentencia = "SELECT ID_CLIENTE,NOMBRE_COMPLETO,CEDULA FROM CLIENTES";
+            String sentencia = "SELECT ID_VENTA,METODOPAGO,FECHA,ID_CLIENTE,ID_VENDEDOR,TOTAL FROM VENTAS";
             if (!condicion.equals((""))) {
                 sentencia = String.format("%s WHERE %s", sentencia, condicion);
             }
             rs = stm.executeQuery(sentencia);
             while (rs.next()) {
-                lista.add(new Cliente(rs.getInt("ID_CLIENTE"), rs.getString("NOMBRE_COMPLETO"),rs.getString("CEDULA")));
+                lista.add(new Ventas(rs.getInt("ID_VENTA"), rs.getString("METODOPAGO"),rs.getDate("FECHA"),rs.getInt("ID_CLIENTE"),rs.getInt("ID_VENDEDOR"),rs.getFloat("TOTAL")));
             }
         } catch (Exception e) {
             throw e;
@@ -78,22 +82,26 @@ public class ADCliente {
         }
         return lista;
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------
-    public Cliente ObtenerRegistro(String condicion) throws SQLException{
-        Cliente cliente =new Cliente();       
+     
+     //-----------------------------------------------------------------------------------------------------------------------------------
+    public Ventas ObtenerRegistro(String condicion) throws SQLException{
+        Ventas ventas =new Ventas();       
         ResultSet rs = null;
         try {
             Statement stm = _cnn.createStatement();
-            String sentencia = "SELECT ID_CLIENTE, NOMBRE_COMPLETO,CEDULA FROM CLIENTES";
+            String sentencia = "SELECT ID_VENTA,METODOPAGO,FECHA,ID_CLIENTE,ID_VENDEDOR,TOTAL FROM VENTAS";
             if (!condicion.equals("")) {
                 sentencia = String.format("%s where %s", sentencia,condicion);                
             }
             rs = stm.executeQuery(sentencia);
             if (rs.next()) {
-                cliente.setId(rs.getInt(1));
-                cliente.setNombre(rs.getString(2));
-                cliente.setCedula(rs.getString(3));                
-                cliente.setExiste(true);                
+                ventas.setId(rs.getInt(1));
+                ventas.setMetodoPago(rs.getString(2));
+                ventas.setFecha(rs.getDate(3));
+                ventas.setId_Cliente(rs.getInt(4));             
+                ventas.setId_Vendedor(rs.getInt(5));
+                ventas.setTotal(rs.getFloat(6));
+                ventas.setExiste(true);                
             }
         } catch (Exception e) {
             throw e;
@@ -101,17 +109,20 @@ public class ADCliente {
         finally{
             _cnn=null;
         }
-        return cliente;
+        return ventas;
     }
+    
     //-----------------------------------------------------------------------------------------------------------------------------------
-    public int Modificar(Cliente cliente) throws Exception {
+    public int Modificar(Ventas ventas) throws Exception {
         int resultado = 0;
-        String sentencia = "UPDATE CLIENTES SET NOMBRE_COMPLETO=?,CEDULA=? WHERE ID_CLIENTE=?";
+        String sentencia = "UPDATE VENTAS SET METODOPAGO=?,FECHA=?,ID_CLIENTE=?,ID_VENDEDOR=?,TOTAL=? WHERE ID_VENTA=?";
         try {
             PreparedStatement ps = _cnn.prepareStatement(sentencia);
-            ps.setString(1, cliente.getNombre());
-            ps.setString(2, cliente.getCedula());            
-            ps.setInt(3, cliente.getId());
+            ps.setString(1, ventas.getMetodoPago());
+            ps.setDate(2, ventas.getFecha());            
+            ps.setInt(3, ventas.getId_Cliente());
+            ps.setInt(4, ventas.getId_Vendedor());
+            ps.setFloat(5, ventas.getTotal());
             resultado = ps.executeUpdate();
             if (resultado > 0) {
                 _mensaje = "Registro modificado satisfactoriamente";
@@ -124,12 +135,12 @@ public class ADCliente {
         return resultado;
     }
     //-----------------------------------------------------------------------------------------------------------------------------------
-    public int Eliminar(Cliente cliente) throws Exception {
+    public int Eliminar(Ventas ventas) throws Exception {
         int resultado = 0;
-        String sentencia = "DELETE CLIENTES WHERE ID_CLIENTE=?";
+        String sentencia = "DELETE VENTAS WHERE ID_VENTA=?";
         try {
             PreparedStatement ps = _cnn.prepareStatement(sentencia);
-            ps.setInt(1, cliente.getId());
+            ps.setInt(1, ventas.getId());
             resultado = ps.executeUpdate();
             if (resultado > 0) {
                 _mensaje = "Registro Eliminado satisfactoriamente";
@@ -142,5 +153,4 @@ public class ADCliente {
         return resultado;
     }
     //-----------------------------------------------------------------------------------------------------------------------------------
-    
 }

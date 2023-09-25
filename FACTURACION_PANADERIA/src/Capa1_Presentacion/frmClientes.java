@@ -41,7 +41,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             LNCliente logica = new LNCliente();
             List<Cliente> lista;
             LimpiarTabla();
-            Object[] fila = new Object[4];
+            Object[] fila = new Object[3];
             lista = logica.ListarRegistros(condicion);
             for (Cliente cliente : lista) {
                 fila[0] = cliente.getId();
@@ -271,7 +271,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             if (evt.getClickCount()==2) {
                 int fila = tblClientes.rowAtPoint(evt.getPoint());
                 txtId.setText(tblClientes.getValueAt(fila, 0).toString());
-                condicion=String.format("id_cliente=%s", txtId.getText());
+                condicion=String.format("ID_CLIENTE=%s", txtId.getText());
                 cliente=logica.ObtenerRegistro(condicion);
                 txtId.setText(String.valueOf(cliente.getId()));
                 txtNombre.setText(cliente.getNombre());
@@ -294,7 +294,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
                     LNCliente logica = new LNCliente();
                     Cliente cliente;
                     if (id > -1) {
-                        condicion = String.format("id_cliente=%d", id);
+                        condicion = String.format("ID_CLIENTE=%d", id);
                         cliente = logica.ObtenerRegistro(condicion);
                         txtId.setText(String.valueOf(cliente.getId()));
                         txtNombre.setText(cliente.getNombre());
