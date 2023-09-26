@@ -2,9 +2,6 @@ package Capa_Entidades;
 
 import java.sql.Date;
 
-
-
-
 public class Ventas {
     //atrubutos
     private int id;

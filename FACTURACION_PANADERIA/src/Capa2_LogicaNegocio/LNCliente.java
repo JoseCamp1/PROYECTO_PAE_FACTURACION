@@ -15,6 +15,7 @@ public class LNCliente {
     }
     
      //llamar al metodo de insertar cliente de la capa de acceso de datos
+    //---------------------------------------------------------------------------------
     public int Insertar(Cliente cliente) throws Exception {
         int id = -1;
         ADCliente adcliente;
@@ -27,7 +28,7 @@ public class LNCliente {
         }
         return id;
     } 
-    
+    //---------------------------------------------------------------------------------
     public List<Cliente> ListarRegistros(String condicion) throws Exception{
         List<Cliente> resultado =new ArrayList();
         ADCliente adcliente;
@@ -39,7 +40,7 @@ public class LNCliente {
         }
         return resultado;       
     }    
-    
+    //---------------------------------------------------------------------------------
     public Cliente ObtenerRegistro (String condicion) throws Exception{
         Cliente resultado;
         ADCliente adcliente;
@@ -56,7 +57,7 @@ public class LNCliente {
         }
         return resultado;
     }
-    
+    //---------------------------------------------------------------------------------
     public int Modificar(Cliente cliente) throws Exception{
         int resultado=-1;
         ADCliente adcliente;
@@ -70,7 +71,7 @@ public class LNCliente {
         }
         return  resultado;
     }
-    
+    //---------------------------------------------------------------------------------
     public int Eliminar(Cliente cliente) throws Exception{
         int resultado=-1;
         ADCliente adcliente;
@@ -83,5 +84,6 @@ public class LNCliente {
             throw e;
         }
         return  resultado;
-    }    
+    }
+//---------------------------------------------------------------------------------    
 }
