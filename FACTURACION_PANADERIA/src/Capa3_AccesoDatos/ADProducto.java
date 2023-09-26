@@ -38,7 +38,7 @@ public class ADProducto {
     //-----------------------------------------------------------------------------------------------------------------------------------
     public int Insertar(Producto producto) throws Exception {
         int id_cliente = -1;
-        String sentencia = "INSERT INTO CLIENTES(NOMBRE,DESCRIPCION,PRECIO,STOCK) VALUES (?,?,?,?)";
+        String sentencia = "INSERT INTO PRODUCTOS(NOMBRE,DESCRIPCION,PRECIO,STOCK) VALUES (?,?,?,?)";
         try {
             PreparedStatement ps = _cnn.prepareStatement(sentencia, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, producto.getNombre());

@@ -26,6 +26,7 @@ public class frmMenu extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mnuClientes = new javax.swing.JMenuItem();
         mnuVendedores = new javax.swing.JMenuItem();
+        mnuProductos = new javax.swing.JMenuItem();
         mnuVentas = new javax.swing.JMenuItem();
         mnuSalir = new javax.swing.JMenuItem();
 
@@ -64,6 +65,16 @@ public class frmMenu extends javax.swing.JFrame {
         });
         jMenu1.add(mnuVendedores);
 
+        mnuProductos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mnuProductos.setText("Productos");
+        mnuProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuProductosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuProductos);
+
+        mnuVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK));
         mnuVentas.setText("Ventas");
         mnuVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +154,19 @@ public class frmMenu extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_mnuVentasActionPerformed
 
+    private void mnuProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuProductosActionPerformed
+        frmProductos frm = new frmProductos();
+        escritorio.add(frm);
+        //entrar el formulario clientes
+        //tamano de la ventana contenedor
+        Dimension sizeContenedor = escritorio.getSize();
+        //tamano de la ventana clientes
+        Dimension sizeFrmProductos = frm.getSize();
+        frm.setLocation(((int)sizeContenedor.getWidth()-(int)sizeFrmProductos.getWidth())/2,((int)sizeContenedor.getHeight()-(int)sizeFrmProductos.getHeight())/2);
+        frm.toFront();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuProductosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -183,6 +207,7 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem mnuClientes;
+    private javax.swing.JMenuItem mnuProductos;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenuItem mnuVendedores;
     private javax.swing.JMenuItem mnuVentas;
