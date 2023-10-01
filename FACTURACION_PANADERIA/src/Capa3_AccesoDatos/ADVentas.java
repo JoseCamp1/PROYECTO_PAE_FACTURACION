@@ -43,7 +43,7 @@ public class ADVentas {
         try {
             PreparedStatement ps = _cnn.prepareStatement(sentencia, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, ventas.getMetodoPago());
-            ps.setDate(2, ventas.getFecha());
+            ps.setString(2, ventas.getFecha());
             ps.setInt(3, ventas.getId_Cliente());
             ps.setInt(4, ventas.getId_Vendedor());
             ps.setFloat(5, ventas.getTotal());
@@ -73,7 +73,7 @@ public class ADVentas {
             }
             rs = stm.executeQuery(sentencia);
             while (rs.next()) {
-                lista.add(new Ventas(rs.getInt("ID_VENTA"), rs.getString("METODOPAGO"),rs.getDate("FECHA"),rs.getInt("ID_CLIENTE"),rs.getInt("ID_VENDEDOR"),rs.getFloat("TOTAL")));
+                lista.add(new Ventas(rs.getInt("ID_VENTA"), rs.getString("METODOPAGO"),rs.getString("FECHA"),rs.getInt("ID_CLIENTE"),rs.getInt("ID_VENDEDOR"),rs.getFloat("TOTAL")));
             }
         } catch (Exception e) {
             throw e;
@@ -97,7 +97,7 @@ public class ADVentas {
             if (rs.next()) {
                 ventas.setId(rs.getInt(1));
                 ventas.setMetodoPago(rs.getString(2));
-                ventas.setFecha(rs.getDate(3));
+                ventas.setFecha(rs.getString(3));
                 ventas.setId_Cliente(rs.getInt(4));             
                 ventas.setId_Vendedor(rs.getInt(5));
                 ventas.setTotal(rs.getFloat(6));
@@ -119,10 +119,11 @@ public class ADVentas {
         try {
             PreparedStatement ps = _cnn.prepareStatement(sentencia);
             ps.setString(1, ventas.getMetodoPago());
-            ps.setDate(2, ventas.getFecha());            
+            ps.setString(2, ventas.getFecha());            
             ps.setInt(3, ventas.getId_Cliente());
             ps.setInt(4, ventas.getId_Vendedor());
             ps.setFloat(5, ventas.getTotal());
+            ps.setInt(6, ventas.getId());
             resultado = ps.executeUpdate();
             if (resultado > 0) {
                 _mensaje = "Registro modificado satisfactoriamente";

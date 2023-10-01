@@ -1,12 +1,10 @@
 package Capa_Entidades;
 
-import java.sql.Date;
-
 public class Ventas {
-    //atrubutos
+    //atributos
     private int id;
     private String metodoPago;
-    private Date fecha;
+    private String fecha;
     private int id_Cliente;
     private int id_Vendedor;
     private float total;
@@ -16,14 +14,14 @@ public class Ventas {
     public Ventas() {
         id=0;
         metodoPago="";
-        fecha=Date.valueOf("");
+        fecha="";
         id_Cliente=0;
         id_Vendedor=0;
         total=0;
         existe=false;
     }
     
-    public Ventas(int id, String metodoPago, Date fecha, int id_Cliente, int id_Vendedor, float total) {
+    public Ventas(int id, String metodoPago, String fecha, int id_Cliente, int id_Vendedor, float total) {
         this.id = id;
         this.metodoPago = metodoPago;
         this.fecha = fecha;
@@ -52,11 +50,11 @@ public class Ventas {
         this.metodoPago = metodoPago;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
