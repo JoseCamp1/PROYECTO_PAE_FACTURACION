@@ -172,6 +172,69 @@ SELECT * FROM COMPRAS
 SELECT * FROM DETALLE_COMPRAS
 SELECT * FROM PRODUCTOS
 
+----------------
+---- TRIGGERS --
+----------------
+
+GO
+-- Este trigger se ejecutará después de insertar un nuevo registro en DETALLE_VENTAS y reducirá la cantidad de stock del producto correspondiente en la tabla PRODUCTOS.
+CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_STOCK_VENTAS
+ON DETALLE_VENTAS
+AFTER INSERT
+AS
+BEGIN
+    -- Obtener el ID del producto y la cantidad vendida del registro insertado
+    DECLARE @ID_PRODUCTO INT, @CANTIDAD INT;
+    SELECT @ID_PRODUCTO = ID_PRODUCTO, @CANTIDAD = CANTIDAD
+    FROM inserted;
+
+    -- Actualizar el stock del producto en la tabla PRODUCTOS
+    UPDATE PRODUCTOS
+    SET STOCK = STOCK - @CANTIDAD
+    WHERE ID_PRODUCTO = @ID_PRODUCTO;
+END;
+GO
+
+
+---- Este trigger se ejecutará después de insertar un nuevo registro en DETALLE_COMPRAS y aumentará la cantidad de stock del producto en la tabla PRODUCTOS.
+--CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_STOCK_COMPRAS
+--ON DETALLE_COMPRAS
+--AFTER INSERT
+--AS
+--BEGIN
+--    -- Obtener el ID del producto y la cantidad comprada del registro insertado
+--    DECLARE @ID_PRODUCTO INT, @CANTIDAD INT;
+--    SELECT @ID_PRODUCTO = ID_PRODUCTO, @CANTIDAD = CANTIDAD
+--    FROM inserted;
+
+--    -- Actualizar el stock del producto en la tabla PRODUCTOS
+--    UPDATE PRODUCTOS
+--    SET STOCK = STOCK + @CANTIDAD
+--    WHERE ID_PRODUCTO = @ID_PRODUCTO;
+--END;
+--GO
+
+-- Este trigger se ejecutará después de insertar o actualizar un registro en la tabla VENTAS y 
+-- recalculará automáticamente el campo TOTAL basado en los SUBTOTAL de los registros en DETALLE_VENTAS asociados a esa venta.
+CREATE OR ALTER TRIGGER TRIGGER_CALCULAR_TOTAL_VENTA
+ON VENTAS
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    -- Obtener el ID de la venta del registro insertado o actualizado
+    DECLARE @ID_VENTA INT;
+    SELECT @ID_VENTA = ID_VENTA
+    FROM inserted;
+
+    -- Calcular el nuevo total de la venta
+    UPDATE VENTAS
+    SET TOTAL = (SELECT SUM(SUBTOTAL) FROM DETALLE_VENTAS WHERE ID_VENTA = @ID_VENTA)
+    WHERE ID_VENTA = @ID_VENTA;
+END;
+GO
+
+
+
 --------------------------------
 -- PROCEDIMIENTOS ALMACENADOS --
 --------------------------------
@@ -729,68 +792,6 @@ SELECT * FROM PRODUCTOS
 --        V.ID_VENDEDOR, COALESCE(MONTH(VT.FECHA), 0);
 --END;
 --GO
-
-----------------
----- TRIGGERS --
-----------------
-
-
----- Este trigger se ejecutará después de insertar un nuevo registro en DETALLE_VENTAS y reducirá la cantidad de stock del producto correspondiente en la tabla PRODUCTOS.
---CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_STOCK_VENTAS
---ON DETALLE_VENTAS
---AFTER INSERT
---AS
---BEGIN
---    -- Obtener el ID del producto y la cantidad vendida del registro insertado
---    DECLARE @ID_PRODUCTO INT, @CANTIDAD INT;
---    SELECT @ID_PRODUCTO = ID_PRODUCTO, @CANTIDAD = CANTIDAD
---    FROM inserted;
-
---    -- Actualizar el stock del producto en la tabla PRODUCTOS
---    UPDATE PRODUCTOS
---    SET STOCK = STOCK - @CANTIDAD
---    WHERE ID_PRODUCTO = @ID_PRODUCTO;
---END;
---GO
-
-
----- Este trigger se ejecutará después de insertar un nuevo registro en DETALLE_COMPRAS y aumentará la cantidad de stock del producto en la tabla PRODUCTOS.
---CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_STOCK_COMPRAS
---ON DETALLE_COMPRAS
---AFTER INSERT
---AS
---BEGIN
---    -- Obtener el ID del producto y la cantidad comprada del registro insertado
---    DECLARE @ID_PRODUCTO INT, @CANTIDAD INT;
---    SELECT @ID_PRODUCTO = ID_PRODUCTO, @CANTIDAD = CANTIDAD
---    FROM inserted;
-
---    -- Actualizar el stock del producto en la tabla PRODUCTOS
---    UPDATE PRODUCTOS
---    SET STOCK = STOCK + @CANTIDAD
---    WHERE ID_PRODUCTO = @ID_PRODUCTO;
---END;
---GO
-
----- Este trigger se ejecutará después de insertar o actualizar un registro en la tabla VENTAS y 
----- recalculará automáticamente el campo TOTAL basado en los SUBTOTAL de los registros en DETALLE_VENTAS asociados a esa venta.
---CREATE OR ALTER TRIGGER TRIGGER_CALCULAR_TOTAL_VENTA
---ON VENTAS
---AFTER INSERT, UPDATE
---AS
---BEGIN
---    -- Obtener el ID de la venta del registro insertado o actualizado
---    DECLARE @ID_VENTA INT;
---    SELECT @ID_VENTA = ID_VENTA
---    FROM inserted;
-
---    -- Calcular el nuevo total de la venta
---    UPDATE VENTAS
---    SET TOTAL = (SELECT SUM(SUBTOTAL) FROM DETALLE_VENTAS WHERE ID_VENTA = @ID_VENTA)
---    WHERE ID_VENTA = @ID_VENTA;
---END;
---GO
-
 
 
 ------------------------
