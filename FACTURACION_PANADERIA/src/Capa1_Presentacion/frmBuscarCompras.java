@@ -1,21 +1,69 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Capa1_Presentacion;
 
-/**
- *
- * @author JoaCa
- */
+import Capa_Entidades.Compras;
+import Capa2_LogicaNegocio.LNCompras;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class frmBuscarCompras extends javax.swing.JDialog {
 
-    /**
-     * Creates new form frmBuscarCompras
-     */
+     //-----------------------------------------------------------
+    DefaultTableModel modelo;
+    private void LimpiarTabla(){
+        modelo = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row,int column){
+                return  false;
+            }
+        };
+        tblVendedores.setModel(modelo);
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Fecha");
+        modelo.addColumn("Proveedor");        
+        modelo.addColumn("Total");               
+    }
+    
+    //-------------------------------------------------------------
+    private void CargarDatos(String condicion) throws Exception {
+        try {
+            LNCompras logica = new LNCompras();
+            List<Compras> lista;
+            LimpiarTabla();
+            Object[] fila = new Object[4];
+            lista = logica.ListarRegistros(condicion);
+            for (Compras compras : lista) {
+                fila[0] = compras.getId();
+                fila[1] = compras.getFecha();
+                fila[2] = compras.getProveedor();
+                fila[3] = compras.getTotal();
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    } 
+    
+    //--------------------------------------------------------------
+    public int ObtenerId(){
+        int codigo = -1;
+        if (!txtId.getText().equals("")) {
+            codigo=Integer.parseInt(txtId.getText());
+        }
+        return  codigo;
+    }
+    
+    
     public frmBuscarCompras(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Buscar Compras");
+        this.setLocationRelativeTo(null);
+        try {
+            CargarDatos("");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }
 
     /**
@@ -27,21 +75,127 @@ public class frmBuscarCompras extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblVendedores = new javax.swing.JTable();
+        btnCancelar = new javax.swing.JButton();
+        txtId = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtProveedor = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        btnBuscar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        tblVendedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblVendedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVendedoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblVendedores);
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        txtId.setEditable(false);
+
+        jLabel1.setText("Codigo");
+
+        jLabel2.setText("Proveedor");
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBuscar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(77, 77, 77))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCancelar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscar)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblVendedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVendedoresMouseClicked
+        if (evt.getClickCount()==2) {
+            int fila = tblVendedores.rowAtPoint(evt.getPoint());
+            txtId.setText(tblVendedores.getValueAt(fila, 0).toString());
+            txtProveedor.setText(tblVendedores.getValueAt(fila, 1).toString());
+            this.dispose();
+        }
+    }//GEN-LAST:event_tblVendedoresMouseClicked
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String condicion="";
+        try {
+            if (!txtProveedor.getText().equals("")) {
+                condicion="PROVEEDOR LIKE '%"+txtProveedor.getText()+"%'";
+            }
+            CargarDatos(condicion);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -86,5 +240,13 @@ public class frmBuscarCompras extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblVendedores;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtProveedor;
     // End of variables declaration//GEN-END:variables
 }

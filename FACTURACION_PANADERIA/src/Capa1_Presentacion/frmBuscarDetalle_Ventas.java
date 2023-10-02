@@ -60,7 +60,7 @@ public class frmBuscarDetalle_Ventas extends javax.swing.JDialog {
     public frmBuscarDetalle_Ventas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setTitle("Buscar Venta");
+        this.setTitle("Buscar Detalles Venta");
         this.setLocationRelativeTo(null);
         try {
             CargarDatos("");

@@ -29,6 +29,7 @@ public class frmMenu extends javax.swing.JFrame {
         mnuProductos = new javax.swing.JMenuItem();
         mnuVentas = new javax.swing.JMenuItem();
         mnuDetalle_Ventas = new javax.swing.JMenuItem();
+        mnuCompras = new javax.swing.JMenuItem();
         mnuSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,6 +92,14 @@ public class frmMenu extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mnuDetalle_Ventas);
+
+        mnuCompras.setText("Compras");
+        mnuCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuComprasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuCompras);
 
         mnuSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuSalir.setText("Salir");
@@ -189,6 +198,19 @@ public class frmMenu extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_mnuDetalle_VentasActionPerformed
 
+    private void mnuComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuComprasActionPerformed
+       frmCompras frm = new frmCompras();
+        escritorio.add(frm);
+        //entrar el formulario clientes
+        //tamano de la ventana contenedor
+        Dimension sizeContenedor = escritorio.getSize();
+        //tamano de la ventana clientes
+        Dimension sizeForm = frm.getSize();
+        frm.setLocation(((int)sizeContenedor.getWidth()-(int)sizeForm.getWidth())/2,((int)sizeContenedor.getHeight()-(int)sizeForm.getHeight())/2);
+        frm.toFront();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuComprasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -229,6 +251,7 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem mnuClientes;
+    private javax.swing.JMenuItem mnuCompras;
     private javax.swing.JMenuItem mnuDetalle_Ventas;
     private javax.swing.JMenuItem mnuProductos;
     private javax.swing.JMenuItem mnuSalir;

@@ -1,22 +1,88 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package Capa1_Presentacion;
 
-/**
- *
- * @author JoaCa
- */
+import Capa_Entidades.Compras;
+import Capa2_LogicaNegocio.LNCompras;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class frmCompras extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form frmCompras
-     */
+    
+       //-----------------------------------------------------------
+    private Compras GenerarEntidad() {
+        Compras compras = new Compras();
+        if (!txtId.getText().equals("")) {
+            compras.setExiste(true);
+            compras.setId(Integer.parseInt(txtId.getText()));
+        }
+        compras.setFecha(txtFecha.getText());        
+        compras.setProveedor(txtProveedor.getText());               
+        compras.setTotal(Float.valueOf(txtTotal.getText()));
+        return compras;
+    }   
+    
+     //-----------------------------------------------------------
+    DefaultTableModel modelo;
+    private void LimpiarTabla(){
+        modelo = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row,int column){
+                return  false;
+            }
+        };
+        tblVendedores.setModel(modelo);
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Fecha");
+        modelo.addColumn("Proveedor");        
+        modelo.addColumn("Total");               
+    }
+    
+     //-------------------------------------------------------------
+    private void CargarDatos(String condicion) throws Exception {
+        try {
+            LNCompras logica = new LNCompras();
+            List<Compras> lista;
+            LimpiarTabla();
+            Object[] fila = new Object[4];
+            lista = logica.ListarRegistros(condicion);
+            for (Compras compras : lista) {
+                fila[0] = compras.getId();
+                fila[1] = compras.getFecha();
+                fila[2] = compras.getProveedor();
+                fila[3] = compras.getTotal();
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    } 
+    
+      //-----------------------------------------------------------
+    private void Limpiar(){
+        txtId.setText("");
+        txtFecha.setText("");
+        txtProveedor.setText("");     
+        txtTotal.setText(""); 
+    }
+    //-----------------------------------------------------------          
+    
     public frmCompras() {
         initComponents();
-    }
+        try {
+            CargarDatos("");
 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }
+//-----------------------------------------------------------
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +92,276 @@ public class frmCompras extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnEliminar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblVendedores = new javax.swing.JTable();
+        btnGuardar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        btnSalir = new javax.swing.JButton();
+        txtTotal = new javax.swing.JTextField();
+        btnLimpiar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtProveedor = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        txtFecha = new javax.swing.JTextField();
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        tblVendedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblVendedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVendedoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblVendedores);
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Proveedor");
+
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Total");
+
+        jLabel1.setText("Codigo");
+
+        txtId.setEditable(false);
+
+        jLabel2.setText("Fecha");
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(58, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 77, 77))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(btnBuscar)
+                .addGap(18, 18, 18)
+                .addComponent(btnLimpiar)
+                .addGap(18, 18, 18)
+                .addComponent(btnGuardar)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminar)
+                .addGap(18, 18, 18)
+                .addComponent(btnSalir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(30, 30, 30))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnSalir))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        LNCompras logica = new LNCompras();
+        Compras compras;
+        try {
+            compras=GenerarEntidad();
+            if (compras.isExiste()) {
+                if (logica.Eliminar(compras)>0) {
+                    JOptionPane.showMessageDialog(this, logica.getMensaje());
+                    Limpiar();
+                    CargarDatos("");
+
+                }else{
+                    JOptionPane.showMessageDialog(this, "No fue posible eliminar el registro");
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "Debe seleccionar el registro que desea eliminar");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se puede eliminar el registro. "+e.getMessage());
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void tblVendedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVendedoresMouseClicked
+
+        try {
+            LNCompras logica = new LNCompras();
+            Compras compras;
+            String condicion;
+            if (evt.getClickCount() == 2) {
+                int fila = tblVendedores.rowAtPoint(evt.getPoint());
+                txtId.setText(tblVendedores.getValueAt(fila, 0).toString());
+                condicion = String.format("ID_COMPRA=%s", txtId.getText());
+                compras = logica.ObtenerRegistro(condicion);
+                txtId.setText(String.valueOf(compras.getId()));
+                txtFecha.setText(compras.getFecha());
+                txtProveedor.setText(compras.getProveedor());                
+                txtTotal.setText(String.valueOf(compras.getTotal()));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_tblVendedoresMouseClicked
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        LNCompras logica = new LNCompras();
+        Compras compras = GenerarEntidad();
+        try {
+            if (compras.isExiste()) {
+                logica.Modificar(compras);
+            }else{
+                logica.Insertar(compras);
+            }
+            JOptionPane.showMessageDialog(this, logica.getMensaje());
+            Limpiar();
+            CargarDatos("");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        Limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        frmBuscarCompras frmBuscar = new frmBuscarCompras(null, true);
+        frmBuscar.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+                try {
+                    int id = frmBuscar.ObtenerId();
+                    String condicion = "";
+                    LNCompras logica = new LNCompras();
+                    Compras compras;
+                    if (id > -1) {
+                        condicion = String.format("ID_COMPRA=%d", id);
+                        compras = logica.ObtenerRegistro(condicion);
+                        txtId.setText(String.valueOf(compras.getId()));
+                        txtFecha.setText(compras.getFecha());
+                        txtProveedor.setText(compras.getProveedor());                        
+                        txtTotal.setText(String.valueOf(compras.getTotal()));
+                    } else {
+                        txtId.setText("");
+                        txtFecha.setText("");
+                        txtProveedor.setText("");
+                        txtTotal.setText("");                        
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+            }
+        });
+        frmBuscar.setVisible(true);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblVendedores;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtProveedor;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }
