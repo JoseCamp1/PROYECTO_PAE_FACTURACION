@@ -28,6 +28,7 @@ public class frmMenu extends javax.swing.JFrame {
         mnuVendedores = new javax.swing.JMenuItem();
         mnuProductos = new javax.swing.JMenuItem();
         mnuVentas = new javax.swing.JMenuItem();
+        mnuDetalle_Ventas = new javax.swing.JMenuItem();
         mnuSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -82,6 +83,14 @@ public class frmMenu extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mnuVentas);
+
+        mnuDetalle_Ventas.setText("Detalle Ventas");
+        mnuDetalle_Ventas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDetalle_VentasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuDetalle_Ventas);
 
         mnuSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuSalir.setText("Salir");
@@ -167,6 +176,19 @@ public class frmMenu extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_mnuProductosActionPerformed
 
+    private void mnuDetalle_VentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDetalle_VentasActionPerformed
+        frmDetalle_Ventas frm = new frmDetalle_Ventas();
+        escritorio.add(frm);
+        //entrar el formulario clientes
+        //tamano de la ventana contenedor
+        Dimension sizeContenedor = escritorio.getSize();
+        //tamano de la ventana clientes
+        Dimension sizeFrmDetalle_Ventas = frm.getSize();
+        frm.setLocation(((int)sizeContenedor.getWidth()-(int)sizeFrmDetalle_Ventas.getWidth())/2,((int)sizeContenedor.getHeight()-(int)sizeFrmDetalle_Ventas.getHeight())/2);
+        frm.toFront();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuDetalle_VentasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -207,6 +229,7 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem mnuClientes;
+    private javax.swing.JMenuItem mnuDetalle_Ventas;
     private javax.swing.JMenuItem mnuProductos;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenuItem mnuVendedores;

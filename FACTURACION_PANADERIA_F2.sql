@@ -103,6 +103,7 @@ CREATE TABLE DETALLE_COMPRAS (
 
 -- Insertar datos en la tabla CLIENTES
 INSERT INTO CLIENTES (NOMBRE_COMPLETO, CEDULA) VALUES
+('Cliente Default', '999999999'),
 ('Juan Pérez', '123456789'),
 ('Ana Sánchez', '987654321'),
 ('María Rodríguez', '555555555'),

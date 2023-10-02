@@ -69,8 +69,7 @@ public class frmVentas extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             throw e;
         }
-    }
-    
+    }    
     //-----------------------------------------------------------
     private void Limpiar(){
         txtId.setText("");
@@ -80,9 +79,7 @@ public class frmVentas extends javax.swing.JInternalFrame {
         txtId_Vendedor.setText("");
         txtTotal.setText("");
     }
-
-    //-----------------------------------------------------------
-    
+    //-----------------------------------------------------------    
     public frmVentas() {
         initComponents();        
         try {
@@ -90,8 +87,7 @@ public class frmVentas extends javax.swing.JInternalFrame {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        }
-        
+        }        
     }
     //-----------------------------------------------------------
 
@@ -318,10 +314,10 @@ public class frmVentas extends javax.swing.JInternalFrame {
             LNVentas logica = new LNVentas();
             Ventas ventas;
             String condicion;
-            if (evt.getClickCount() == 1) {
+            if (evt.getClickCount() == 2) {
                 int fila = tblVendedores.rowAtPoint(evt.getPoint());
                 txtId.setText(tblVendedores.getValueAt(fila, 0).toString());
-                condicion = String.format("ID_VENDEDOR=%s", txtId.getText());
+                condicion = String.format("ID_VENTA=%s", txtId.getText());
                 ventas = logica.ObtenerRegistro(condicion);
                 txtId.setText(String.valueOf(ventas.getId()));
                 txtMetodoPago.setText(ventas.getMetodoPago());

@@ -1,20 +1,89 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package Capa1_Presentacion;
 
-/**
- *
- * @author JoaCa
- */
+import Capa_Entidades.Detalle_Ventas;
+import Capa2_LogicaNegocio.LNDetalle_Ventas;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class frmDetalle_Ventas extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form frmDetalle_Ventas
-     */
+     //-----------------------------------------------------------
+    private Detalle_Ventas GenerarEntidad() {
+        Detalle_Ventas detalle_Ventas = new Detalle_Ventas();
+        if (!txtId.getText().equals("")) {
+            detalle_Ventas.setExiste(true);
+            detalle_Ventas.setId(Integer.parseInt(txtId.getText()));
+        }
+        detalle_Ventas.setId_Venta(Integer.parseInt(txtId_Venta.getText()));        
+        detalle_Ventas.setId_Producto(Integer.parseInt(txtId_Producto.getText()));  
+        detalle_Ventas.setCantidad(Integer.parseInt(txtCantidad.getText()));        
+        detalle_Ventas.setSubtotal(Float.valueOf(txtSubtotal.getText()));
+        return detalle_Ventas;
+    }   
+    
+    //-----------------------------------------------------------
+    DefaultTableModel modelo;
+    private void LimpiarTabla(){
+        modelo = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row,int column){
+                return  false;
+            }
+        };
+        tblVendedores.setModel(modelo);
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Id Venta");
+        modelo.addColumn("Id Producto");        
+        modelo.addColumn("Cantidad"); 
+        modelo.addColumn("Subtotal");        
+    }
+    
+     //-------------------------------------------------------------
+    private void CargarDatos(String condicion) throws Exception {
+        try {
+            LNDetalle_Ventas logica = new LNDetalle_Ventas();
+            List<Detalle_Ventas> lista;
+            LimpiarTabla();
+            Object[] fila = new Object[5];
+            lista = logica.ListarRegistros(condicion);
+            for (Detalle_Ventas detalle_Ventas : lista) {
+                fila[0] = detalle_Ventas.getId();
+                fila[1] = detalle_Ventas.getId_Venta();
+                fila[2] = detalle_Ventas.getId_Producto();
+                fila[3] = detalle_Ventas.getCantidad();
+                fila[4] = detalle_Ventas.getSubtotal();                
+                modelo.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }    
+     //-----------------------------------------------------------
+    private void Limpiar(){
+        txtId.setText("");
+        txtId_Venta.setText("");
+        txtId_Producto.setText("");     
+        txtCantidad.setText("");
+        txtSubtotal.setText("");        
+    }
+    //-----------------------------------------------------------      
     public frmDetalle_Ventas() {
         initComponents();
+         try {
+            CargarDatos("");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+      //-----------------------------------------------------------
     }
 
     /**
@@ -26,21 +95,292 @@ public class frmDetalle_Ventas extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnLimpiar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnBuscar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        btnSalir = new javax.swing.JButton();
+        txtSubtotal = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        txtId_Producto = new javax.swing.JTextField();
+        txtId_Venta = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblVendedores = new javax.swing.JTable();
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Codigo");
+
+        jLabel2.setText("Id Venta");
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Id Producto");
+
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Cantidad");
+
+        jLabel4.setText("Subtotal");
+
+        txtId.setEditable(false);
+
+        tblVendedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblVendedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVendedoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblVendedores);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(185, 185, 185)
+                .addComponent(btnBuscar)
+                .addGap(18, 18, 18)
+                .addComponent(btnLimpiar)
+                .addGap(18, 18, 18)
+                .addComponent(btnGuardar)
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminar)
+                .addGap(18, 18, 18)
+                .addComponent(btnSalir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtId_Venta))
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtId_Producto))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(269, 269, 269))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(11, 11, 11)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtId_Venta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(30, 30, 30))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(11, 11, 11)
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtId_Producto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnSalir))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        Limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        frmBuscarDetalle_Ventas frmBuscar = new frmBuscarDetalle_Ventas(null, true);
+        frmBuscar.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+                try {
+                    int id = frmBuscar.ObtenerId();
+                    String condicion = "";
+                    LNDetalle_Ventas logica = new LNDetalle_Ventas();
+                    Detalle_Ventas detalle_Ventas;
+                    if (id > -1) {
+                        condicion = String.format("ID_DETALLE=%d", id);
+                        detalle_Ventas = logica.ObtenerRegistro(condicion);
+                        txtId.setText(String.valueOf(detalle_Ventas.getId()));
+                        txtId_Venta.setText(String.valueOf(detalle_Ventas.getId_Venta()));
+                        txtId_Producto.setText(String.valueOf(detalle_Ventas.getId_Producto()));
+                        txtCantidad.setText(String.valueOf(detalle_Ventas.getCantidad()));                        
+                        txtSubtotal.setText(String.valueOf(detalle_Ventas.getSubtotal()));
+                    } else {
+                        txtId.setText("");
+                        txtId_Venta.setText("");
+                        txtId_Producto.setText("");
+                        txtCantidad.setText("");                        
+                        txtSubtotal.setText("");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+            }
+        });
+        frmBuscar.setVisible(true);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        LNDetalle_Ventas logica = new LNDetalle_Ventas();
+        Detalle_Ventas detalle_Ventas;
+        try {
+            detalle_Ventas=GenerarEntidad();
+            if (detalle_Ventas.isExiste()) {
+                if (logica.Eliminar(detalle_Ventas)>0) {
+                    JOptionPane.showMessageDialog(this, logica.getMensaje());
+                    Limpiar();
+                    CargarDatos("");
+
+                }else{
+                    JOptionPane.showMessageDialog(this, "No fue posible eliminar el registro");
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "Debe seleccionar el registro que desea eliminar");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se puede eliminar el registro. "+e.getMessage());
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        LNDetalle_Ventas logica = new LNDetalle_Ventas();
+        Detalle_Ventas detalle_Ventas = GenerarEntidad();
+        try {
+            if (detalle_Ventas.isExiste()) {
+                logica.Modificar(detalle_Ventas);
+            }else{
+                logica.Insertar(detalle_Ventas);
+            }
+            JOptionPane.showMessageDialog(this, logica.getMensaje());
+            Limpiar();
+            CargarDatos("");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void tblVendedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVendedoresMouseClicked
+
+        try {
+            LNDetalle_Ventas logica = new LNDetalle_Ventas();
+            Detalle_Ventas detalle_Ventas;
+            String condicion;
+            if (evt.getClickCount() == 2) {
+                int fila = tblVendedores.rowAtPoint(evt.getPoint());
+                txtId.setText(tblVendedores.getValueAt(fila, 0).toString());
+                condicion = String.format("ID_DETALLE=%s", txtId.getText());
+                detalle_Ventas = logica.ObtenerRegistro(condicion);
+                txtId.setText(String.valueOf(detalle_Ventas.getId()));
+                txtId_Venta.setText(String.valueOf(detalle_Ventas.getId_Venta()));
+               txtId_Producto.setText(String.valueOf(detalle_Ventas.getId_Producto()));
+                txtCantidad.setText(String.valueOf(detalle_Ventas.getCantidad()));                
+                txtSubtotal.setText(String.valueOf(detalle_Ventas.getSubtotal()));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_tblVendedoresMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblVendedores;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtId_Producto;
+    private javax.swing.JTextField txtId_Venta;
+    private javax.swing.JTextField txtSubtotal;
     // End of variables declaration//GEN-END:variables
 }
