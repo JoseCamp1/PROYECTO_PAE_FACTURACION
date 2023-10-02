@@ -157,11 +157,11 @@ INSERT INTO COMPRAS (FECHA, PROVEEDOR, TOTAL) VALUES
 
 -- Insertar datos en la tabla DETALLE_COMPRAS
 INSERT INTO DETALLE_COMPRAS (ID_COMPRA, NOMBRE, CANTIDAD, SUBTOTAL) VALUES
-(1, 'harina', 10, 25.00),
-(1, 'sal', 5, 15.00),
-(2, 'polvo de hornear', 3, 15.75),
-(3, 'aceite', 8, 22.80),
-(4, 'huevos', 6, 27.00);
+(1, 'Harina', 10, 25.00),
+(1, 'Sal', 5, 15.00),
+(2, 'Polvo de Hornear', 3, 15.75),
+(3, 'Aceite', 8, 22.80),
+(4, 'Huevos', 6, 27.00);
 
 GO
 SELECT * FROM CLIENTES
@@ -216,6 +216,7 @@ GO
 
 -- Este trigger se ejecutará después de insertar o actualizar un registro en la tabla VENTAS y 
 -- recalculará automáticamente el campo TOTAL basado en los SUBTOTAL de los registros en DETALLE_VENTAS asociados a esa venta.
+GO
 CREATE OR ALTER TRIGGER TRIGGER_CALCULAR_TOTAL_VENTA
 ON VENTAS
 AFTER INSERT, UPDATE
@@ -232,6 +233,27 @@ BEGIN
     WHERE ID_VENTA = @ID_VENTA;
 END;
 GO
+
+-- Este trigger se ejecutará después de insertar o actualizar un registro en la tabla DETALLE_VENTAS
+-- y recalculará automáticamente el campo TOTAL en la tabla VENTAS basado en los SUBTOTAL de los registros asociados a esa venta.
+GO
+CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_TOTAL_VENTA
+ON DETALLE_VENTAS
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    -- Obtener el ID de la venta del registro insertado o actualizado
+    DECLARE @ID_VENTA INT;
+    SELECT @ID_VENTA = ID_VENTA
+    FROM inserted;
+
+    -- Calcular el nuevo total de la venta
+    UPDATE VENTAS
+    SET TOTAL = (SELECT SUM(SUBTOTAL) FROM DETALLE_VENTAS WHERE ID_VENTA = @ID_VENTA)
+    WHERE ID_VENTA = @ID_VENTA;
+END;
+GO
+
 
 
 
