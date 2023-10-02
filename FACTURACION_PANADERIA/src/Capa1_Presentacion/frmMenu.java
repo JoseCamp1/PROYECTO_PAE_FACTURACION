@@ -30,6 +30,7 @@ public class frmMenu extends javax.swing.JFrame {
         mnuVentas = new javax.swing.JMenuItem();
         mnuDetalle_Ventas = new javax.swing.JMenuItem();
         mnuCompras = new javax.swing.JMenuItem();
+        mnuDetalle_Compras = new javax.swing.JMenuItem();
         mnuSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -49,7 +50,7 @@ public class frmMenu extends javax.swing.JFrame {
 
         jMenu1.setText("Menu");
 
-        mnuClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mnuClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuClientes.setText("Clientes");
         mnuClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -58,7 +59,7 @@ public class frmMenu extends javax.swing.JFrame {
         });
         jMenu1.add(mnuClientes);
 
-        mnuVendedores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mnuVendedores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuVendedores.setText("Vendedores");
         mnuVendedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,7 +68,7 @@ public class frmMenu extends javax.swing.JFrame {
         });
         jMenu1.add(mnuVendedores);
 
-        mnuProductos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mnuProductos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuProductos.setText("Productos");
         mnuProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,7 +77,7 @@ public class frmMenu extends javax.swing.JFrame {
         });
         jMenu1.add(mnuProductos);
 
-        mnuVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        mnuVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuVentas.setText("Ventas");
         mnuVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,6 +86,7 @@ public class frmMenu extends javax.swing.JFrame {
         });
         jMenu1.add(mnuVentas);
 
+        mnuDetalle_Ventas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuDetalle_Ventas.setText("Detalle Ventas");
         mnuDetalle_Ventas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,6 +95,7 @@ public class frmMenu extends javax.swing.JFrame {
         });
         jMenu1.add(mnuDetalle_Ventas);
 
+        mnuCompras.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuCompras.setText("Compras");
         mnuCompras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,6 +103,15 @@ public class frmMenu extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mnuCompras);
+
+        mnuDetalle_Compras.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mnuDetalle_Compras.setText("Detalle Compras");
+        mnuDetalle_Compras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDetalle_ComprasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuDetalle_Compras);
 
         mnuSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mnuSalir.setText("Salir");
@@ -211,6 +223,19 @@ public class frmMenu extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_mnuComprasActionPerformed
 
+    private void mnuDetalle_ComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDetalle_ComprasActionPerformed
+        frmDetalle_Compras frm = new frmDetalle_Compras();
+        escritorio.add(frm);
+        //entrar el formulario clientes
+        //tamano de la ventana contenedor
+        Dimension sizeContenedor = escritorio.getSize();
+        //tamano de la ventana clientes
+        Dimension sizeForm = frm.getSize();
+        frm.setLocation(((int)sizeContenedor.getWidth()-(int)sizeForm.getWidth())/2,((int)sizeContenedor.getHeight()-(int)sizeForm.getHeight())/2);
+        frm.toFront();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuDetalle_ComprasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -252,6 +277,7 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem mnuClientes;
     private javax.swing.JMenuItem mnuCompras;
+    private javax.swing.JMenuItem mnuDetalle_Compras;
     private javax.swing.JMenuItem mnuDetalle_Ventas;
     private javax.swing.JMenuItem mnuProductos;
     private javax.swing.JMenuItem mnuSalir;
