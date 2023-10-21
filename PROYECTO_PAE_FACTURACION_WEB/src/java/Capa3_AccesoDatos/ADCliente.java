@@ -18,64 +18,98 @@ public class ADCliente {
     //constructor
     public ADCliente() {
         _mensaje = "";
-    }
-
+    }   
+    
+    
     // MÉTODOS ___________________________________________________
     // Este método va a llamar a un Procedimiento Almacenado
-    public int Insertar(Cliente cliente) throws Exception {
-        CallableStatement CS = null; // para llamar a un procedimiento almacenado
+//    public int Insertar(Cliente cliente) throws Exception {
+//        CallableStatement CS = null; // para llamar a un procedimiento almacenado
+//        int resultado = -1;
+//        Connection _conexion = null;
+//
+//        try {
+//            _conexion = getConnection(); // obtenemos la Cadena de Conexión
+//            // con static, se usa como si fuera un método de esta clase
+//            CS = _conexion.prepareCall("{call GUARDAR_CLIENTE(?,?,?,?)}");
+//            // llamanos el procedimiento almacenado
+//
+//            // 1) Registrar los parámetros
+//            CS.setInt(1, cliente.getId());
+//            CS.setString(2, cliente.getNombre());
+//            CS.setString(3, cliente.getCedula());
+//            CS.setString(4, _mensaje);
+//            // 2) Registrar los parámetros de SALIDA
+//            CS.registerOutParameter(1, Types.INTEGER);
+//            CS.registerOutParameter(4, Types.VARCHAR);
+//
+//            // 3) Ejecutar
+//            resultado = CS.executeUpdate();
+//
+//            // 4) Leer los parámetros de Salida
+//            _mensaje = CS.getString(4);
+//            // resultado = CS.getInt(1);
+//
+//            /*
+//                También se pudo haber hecho así.
+//                En cuyo caso resultado sería el IDENTITY del nuevo registro insertado
+//                En este ejemplo resultado la CANTIDAD de registros afectados (insertados)
+//                Ambas son válidas, depende de lo querramos. 
+//             */
+// /*
+//                Si no quisiéramos hacer los pasos 2 y 4 (registrar y leer parámetros
+//                de salida), podemos no hacerlo. 
+//                Entonces haríamos algo como lo siguiente, lo cual también sería útil
+//                en caso que un SP NO retorne ningún mensaje (que ya no necesariamente
+//                un SP tiene que retornar mensajes). 
+//             */
+//            //if(resultado > 0){
+//            //    _mensaje = "cliente insertado satisfactoriamente";
+//            //}
+//        } catch (Exception ex) {
+//            //resultado = -1; // ya está definido desde el inicio en -1
+//            _mensaje = "Error inesperado, intente más tarde";
+//            throw ex;
+//        } finally {
+//            if (_conexion != null) {
+//                ClaseConexion.close(_conexion);
+//            }
+//        }
+//        return resultado;
+//    } // método insertar 
+    
+    public int Insertar(Cliente Cliente) throws Exception {
         int resultado = -1;
         Connection _conexion = null;
 
         try {
-            _conexion = getConnection(); // obtenemos la Cadena de Conexión
-            // con static, se usa como si fuera un método de esta clase
-            CS = _conexion.prepareCall("{call GUARDAR(?,?,?,?)}");
-            // llamanos el procedimiento almacenado
+            _conexion = ClaseConexion.getConnection();
+           PreparedStatement ps = _conexion.prepareStatement("INSERT INTO CLIENTES (NOMBRE_COMPLETO, CEDULA) VALUES (?, ?)");
 
-            // 1) Registrar los parámetros
-            CS.setInt(1, cliente.getId());
-            CS.setString(2, cliente.getNombre());
-            CS.setString(3, cliente.getCedula());
-            CS.setString(4, _mensaje);
-            // 2) Registrar los parámetros de SALIDA
-            CS.registerOutParameter(1, Types.INTEGER);
-            CS.registerOutParameter(5, Types.VARCHAR);
-
-            // 3) Ejecutar
-            resultado = CS.executeUpdate();
-
-            // 4) Leer los parámetros de Salida
-            _mensaje = CS.getString(5);
-            // resultado = CS.getInt(1);
-
-            /*
-                También se pudo haber hecho así.
-                En cuyo caso resultado sería el IDENTITY del nuevo registro insertado
-                En este ejemplo resultado la CANTIDAD de registros afectados (insertados)
-                Ambas son válidas, depende de lo querramos. 
-             */
- /*
-                Si no quisiéramos hacer los pasos 2 y 4 (registrar y leer parámetros
-                de salida), podemos no hacerlo. 
-                Entonces haríamos algo como lo siguiente, lo cual también sería útil
-                en caso que un SP NO retorne ningún mensaje (que ya no necesariamente
-                un SP tiene que retornar mensajes). 
-             */
-            //if(resultado > 0){
-            //    _mensaje = "cliente insertado satisfactoriamente";
-            //}
+            ps.setString(1, Cliente.getNombre());
+            ps.setString(2, Cliente.getCedula());
+            //ps.setInt(3, Cliente.getId());
+            resultado = ps.executeUpdate();
         } catch (Exception ex) {
-            //resultado = -1; // ya está definido desde el inicio en -1
-            _mensaje = "Error inesperado, intente más tarde";
+            //resultado = -1;
             throw ex;
         } finally {
             if (_conexion != null) {
                 ClaseConexion.close(_conexion);
             }
+
+            /*
+                NOTA: en estos casos este finally en realidad no se ocupa, porque
+                la conexión es una VARIABLE LOCAL dentro del método, entonces
+                al finalizar el método se destruye la variable automáticamente. 
+                Es decir la conexión se cierra automáticamente al cerrarse finalizar
+                el método. Pero la cerramos por buenas costumbres! 
+             */
         }
         return resultado;
-    } // método insertar 
+        
+        
+    }//Modificar
 
     /*
         MÉTODO 2: Modificar _________________________________________
@@ -89,12 +123,11 @@ public class ADCliente {
 
         try {
             _conexion = ClaseConexion.getConnection();
-            PreparedStatement ps = _conexion.prepareStatement("UPDATE CLIENTES SET NOMBRE_COMPLETO=?, CEDULA=?, WHERE ID_CLIENTE = ?");
+            PreparedStatement ps = _conexion.prepareStatement("UPDATE CLIENTES SET NOMBRE_COMPLETO=?, CEDULA=? WHERE ID_CLIENTE = ?");
 
             ps.setString(1, EntidadCliente.getNombre());
             ps.setString(2, EntidadCliente.getCedula());
             ps.setInt(3, EntidadCliente.getId());
-
             resultado = ps.executeUpdate();
         } catch (Exception ex) {
             //resultado = -1;
@@ -139,7 +172,7 @@ public class ADCliente {
         try {
             _conexion = ClaseConexion.getConnection();
 
-            cs = _conexion.prepareCall("{call Eliminar(?,?)}");
+            cs = _conexion.prepareCall("{call ELIMINAR_CLIENTE(?,?)}");
 
             // 1) Registrar los parámetros
             cs.setInt(1, EntidadCliente.getId());

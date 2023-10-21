@@ -78,7 +78,7 @@
                     %>
 
                     <form action="CrearModificarCliente" method="post" id="form_AgregarModificar">
-                        
+
                         <!-- 
                              la ACCIÓN del formulario es llamar al Servlet CrearModificarCliente, sabemos que es un 
                              Servlet porque no tiene extención .jsp , el método es POST porque es un formulario. *
@@ -95,15 +95,15 @@
 
                         <div class="form-group">
                             <%if (codigo > 0) {%>
-                            
+
                             <!-- Si el cliente existe, mostrará la etiqueta y el ID, deshabilitado para que no se pueda editar -->
-                            
+
                             <label for="txtCodigo" class="control-label">Código</label>
                             <input type="number" id="txtCodigo" name="txtCodigo" value="<%=cliente.getId()%>" readonly class="form-control"/><br>
                             <%} else {%>
-                            
+
                             <!-- Sino, el campo ID se le asigna -1 y no se muestra en pantalla -->
-                            
+
                             <input type="hidden" id="txtCodigo" name="txtCodigo" value="-1"/><br>
                             <%}%>
                         </div>
@@ -117,24 +117,24 @@
                         <!-- form-group para los controles de Cedula -->
                         <div class="form-group">
                             <label for="txtCedula" class="control-label">Cedula</label>
-                            <input type="txt" id="txtCedula" name="txtCedula" value="<%=cliente.getCedula()%>" class="form-control" placeholder="00-00-00-00"/><br>
+                            <input type="txt" id="txtCedula" name="txtCedula" value="<%=cliente.getCedula()%>" class="form-control" placeholder="0-0000-0000"/><br>
                         </div>
 
-                        
+
 
                         <!-- form-group para los BOTONES de guardar y regresar  -->
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="submit" id="btnGuardar" value="Guardar" class="btn btn-primary"/> &nbsp;&nbsp;
                                 <input type="button" id="btnRegresar" value="Regresar" onclick="location.href = 'FrmListarClientes.jsp'" class="btn btn-secondary"/>
-                                
+
                                 <!-- 
                                         El botón Regresar lleva a la página FrmListarClientes.jsp, no estamos haciendo un RESPONSE
                                         porque no está respondiento a ninguna petición, entonces el Regresar lo estamos haciendo por medio de 
                                         Javascript con un atributo ONCLICk a ese botón, y en el ONCLICK estamos usando un LOCATION.HREF
                                         y poder redireccionar a otra página.
                                 -->
-                                
+
                             </div>
                         </div>
 
@@ -162,56 +162,53 @@
                                     // Cuando el documento está listo
                                     $(document).ready(function () {
 
-                                      /*
-                                         Hacemos una FUNCIÓN ANÓNIMA (que no tiene nombre)
-                                         El $ es propio de JQuery, seleccionar el formulario (por medio de su ID) y le aplica
-                                         el método .validate
-                                         Con sólo el .validate ya es suficiente para que el formulario valide, pero recordemos que 
-                                         los mensajes predetermiandos están en inglés. Por ello entre paréntes y entre llaves le agregamos
-                                         las REGLAS y los MENSAJES que deseamos personalizar. 
-                                         
-                                         Nota: estos nombres (por ejemplo txtNombre) son los nombres (atributo name) de los INPUTs.
-                                         Los atributos name de los inputos diferencia mayúsuclas de minúsuclas. 
+                                    /*
+                                     Hacemos una FUNCIÓN ANÓNIMA (que no tiene nombre)
+                                     El $ es propio de JQuery, seleccionar el formulario (por medio de su ID) y le aplica
+                                     el método .validate
+                                     Con sólo el .validate ya es suficiente para que el formulario valide, pero recordemos que 
+                                     los mensajes predetermiandos están en inglés. Por ello entre paréntes y entre llaves le agregamos
+                                     las REGLAS y los MENSAJES que deseamos personalizar. 
+                                     
+                                     Nota: estos nombres (por ejemplo txtNombre) son los nombres (atributo name) de los INPUTs.
+                                     Los atributos name de los inputos diferencia mayúsuclas de minúsuclas. 
                                      */
 
-                                        $("#form_AgregarModificar").validate({
-                                            // Reglas que deseamos personalizar:
-                                            rules: {
-                                                // Si no definimos estas reglas, solamente se aplicarán las reglas que estén definidas
-                                                // dentro de cada input (por ejemplo el input se definió como requiered)
+                                    $("#form_AgregarModificar").validate({
+                                    // Reglas que deseamos personalizar:
+                                    rules: {
+                                    // Si no definimos estas reglas, solamente se aplicarán las reglas que estén definidas
+                                    // dentro de cada input (por ejemplo el input se definió como requiered)
 
-                                                txtNombre: {required: true, maxlength: 50},
-                                                txtCedula {required: true, minlength: 9, maxlength: 9},
-                                                
-                                                // el tamaño anterior podría ser cualquier otro, entre 8 y 11 es sólo un ejemplo
-
-                                                
-
-                                                // Nota: Para determinar estos tamaños debemos verificar las restricciones de nuestra BD
+                                    txtNombre: {required: true, maxlength: 100},
+                                            txtCedula {required: true, maxlength: 9},
+                                            // el tamaño anterior podría ser cualquier otro, entre 8 y 11 es sólo un ejemplo
 
 
-                                            },
+
+                                            // Nota: Para determinar estos tamaños debemos verificar las restricciones de nuestra BD
+
+
+                                    },
                                             // Mensajes que deseamos personalizar: 
                                             messages: {
-                                                txtNombre: "El campo de Nombre es obligatorio (max 50 caracteres)",
-                                                txtCedula "El campo cedula es obligatorio (mínimo 9 caracteres, máximo 9)",
-                                                
+                                            txtNombre: "El campo de Nombre es obligatorio (max 50 caracteres)",
+                                                    txtCedula "El campo Cedula es obligatorio (debe ser 9 caracteres)",
                                             },
                                             errorElement: 'span'
-                                            
-                                                    // Indicamos que si muestar mensajes de error, los muestre dentro de un span, con esto 
-                                                    // de forma automática si se produce un error se va a generar un SPAN, y por eso fue 
-                                                    // que creamos un ESTILO para indicar que el color de ese SPAN fuera rojo en una letra
-                                                    // un poco más pequeña. 
-                                        });
+
+                                            // Indicamos que si muestar mensajes de error, los muestre dentro de un span, con esto 
+                                            // de forma automática si se produce un error se va a generar un SPAN, y por eso fue 
+                                            // que creamos un ESTILO para indicar que el color de ese SPAN fuera rojo en una letra
+                                            // un poco más pequeña. 
                                     });
-                                    
+                                    });
                                     /* 
                                      * Si hubiera estado este código dentro de un archivo JS, funcionaría igual. 
                                      * Pero siempre debemos tener cuidado de primero agregar Jquery y Jquery-validate
                                      * Primero se debe agregar el Jquery (el core) y después del validate, porque el validate
                                      * utiliza el core. Por ello el orden en que se inserten si es importante. 
-                                    */
+                                     */
         </script>
 
     </body>

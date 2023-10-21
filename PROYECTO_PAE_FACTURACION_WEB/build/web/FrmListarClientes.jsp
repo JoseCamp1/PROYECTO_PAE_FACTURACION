@@ -162,7 +162,7 @@
                             
                             // si tiene algo construimos una CONDICIÓN SQL para enviarla el procedimiento de ListarRegistros
                             nombre = request.getParameter ("txtnombre");
-                            condicion="NOMBRE LIKE '%" + nombre + "%'";
+                            condicion="NOMBRE_COMPLETO LIKE '%" + nombre + "%'";
                         }
                         
                         LNCliente logica = new LNCliente();
