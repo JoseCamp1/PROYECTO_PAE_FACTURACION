@@ -1,7 +1,7 @@
 package Servlets;
 
-import Capa_Entidades.Cliente;
-import Capa2_LogicaNegocio.LNCliente;
+import Capa_Entidades.Vendedor;
+import Capa2_LogicaNegocio.LNVendedor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 // Estos dos son sólo de ejemplo:
 // import java.text.SimpleDateFormat;
 // import java.util.Date;
- @WebServlet("/CrearModificarCliente")
+ @WebServlet("/CrearModificarVendedor")
  
-public class CrearModificarCliente extends HttpServlet {
+public class CrearModificarVendedor extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,23 +31,24 @@ public class CrearModificarCliente extends HttpServlet {
         // No la incluimos dentro del Try, porque necesitamos usarla en el catch
 
         try {
-            LNCliente Logica = new LNCliente();
-            Cliente cliente = new Cliente();
+            LNVendedor Logica = new LNVendedor();
+            Vendedor entidad = new Vendedor();
             int resultado;
 
-            cliente.setId(Integer.parseInt(request.getParameter("txtCodigo")));
+            entidad.setId(Integer.parseInt(request.getParameter("txtCodigo")));
             // txtCodigo sabemos que tiene un int, por ello lo parseamos a Intenger
 
-            cliente.setNombre(new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8"));
+            entidad.setNombre(new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8"));
             // Los campos de texto les aplicamos una CODIFICACIÓN DE CARACTERES con un new String y con el 
             // método getBytes. Esto por si viene con caracteres que no sean reconocidos por la BD por ejemplo. 
             // De no hacer esta conversión, por ejemplo en lugar de las tildes o las ñ pueden aparecer símbolos "extraños" para el usuario
 
-           // cliente.setTelefono(request.getParameter("txtTelefono"));
+           // entidad.setTelefono(request.getParameter("txtTelefono"));
             // El teléfono en teoría sólo tiene números y guiones. Pero si quisiéramos prevenir que no incluya 
             // caracteres especiales no reconocidos, también podríamos aplicarle la codificación de caracteres. 
 
-            cliente.setCedula(new String(request.getParameter("txtCedula").getBytes("ISO-8859-1"), "UTF-8"));
+            entidad.setCedula(new String(request.getParameter("txtCedula").getBytes("ISO-8859-1"), "UTF-8"));
+            entidad.setCorreo(new String(request.getParameter("txtCorreo").getBytes("ISO-8859-1"), "UTF-8"));
 
             // Si tuviéramos que trabajar un dato del tipo fecha:
             // Por ejemplo cuando se haga la facturación, que necesita llevar una fecha
@@ -59,12 +60,12 @@ public class CrearModificarCliente extends HttpServlet {
             EntidadFactura.setFecha(fechasql); // en este ejemplo no existe esa entidad
             */
             
-            if (cliente.getId()> 0) {
-                resultado = Logica.Modificar(cliente);
+            if (entidad.getId()> 0) {
+                resultado = Logica.Modificar(entidad);
             } else {
-                resultado = Logica.Insertar(cliente);
+                resultado = Logica.Insertar(entidad);
             }
-            response.sendRedirect("Frm_ListarClientes.jsp");
+            response.sendRedirect("Frm_ListarVendedores.jsp");
 
         } catch (Exception ex) {
             out.print(ex.getMessage());

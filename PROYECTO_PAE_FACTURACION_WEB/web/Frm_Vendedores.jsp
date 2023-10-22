@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="Capa2_LogicaNegocio.LNCliente"%>
-<%@page import="Capa_Entidades.Cliente"%>
+<%@page import="Capa2_LogicaNegocio.LNVendedor"%>
+<%@page import="Capa_Entidades.Vendedor"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,7 +9,7 @@
         <!-- Agregamos los vínculos a Bootstrap y a nuestro archivo de estilos: -->
         <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/estilos.css" rel="stylesheet" type="text/css"/>
-        <title>Mantenimiento de Cliente</title>
+        <title>Mantenimiento de Vendedores</title>
     </head>
     <body>
 
@@ -29,7 +29,7 @@
                                 <a class="nav-link text-dark" href="Frm_ListarProductos.jsp">Productos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="FrmListarClientes.jsp">Clientes</a>
+                                <a class="nav-link text-dark" href="Frm_ListarClientes.jsp">Clientes</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="Frm_ListarFacturas.jsp">Facturación</a>
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-md-8 mx-auto">
                     <div class="card-header">
-                        <h1>Mantenimiento de  Clientes</h1>
+                        <h1>Mantenimiento de Vendedores</h1>
                     </div>
 
                     <!--
@@ -64,20 +64,20 @@
                     <%
                         String id = request.getParameter("idCrearModificar");
                         int codigo = Integer.parseInt(id);
-                        Cliente cliente;
-                        LNCliente logica = new LNCliente();
+                        Vendedor entidad;
+                        LNVendedor logica = new LNVendedor();
 
                         if (codigo > 0) {
                             // Si el cliente existe, lo obtiene enviándole una
                             // CONDICIÓN al método que obtiene un registro:
-                            cliente = logica.ObtenerRegistro("ID_CLIENTE=" + id);
+                            entidad = logica.ObtenerRegistro("ID_VENDEDOR=" + id);
                         } else {
                             // Sino, crea uno nuevo
-                            cliente = new Cliente();
+                            entidad = new Vendedor();
                         }
                     %>
 
-                    <form action="CrearModificarCliente" method="post" id="form_AgregarModificar">
+                    <form action="CrearModificarVendedor" method="post" id="form_AgregarModificar">
 
                         <!-- 
                              la ACCIÓN del formulario es llamar al Servlet CrearModificarCliente, sabemos que es un 
@@ -99,7 +99,7 @@
                             <!-- Si el cliente existe, mostrará la etiqueta y el ID, deshabilitado para que no se pueda editar -->
 
                             <label for="txtCodigo" class="control-label">Código</label>
-                            <input type="number" id="txtCodigo" name="txtCodigo" value="<%=cliente.getId()%>" readonly class="form-control"/><br>
+                            <input type="number" id="txtCodigo" name="txtCodigo" value="<%=entidad.getId()%>" readonly class="form-control"/><br>
                             <%} else {%>
 
                             <!-- Sino, el campo ID se le asigna -1 y no se muestra en pantalla -->
@@ -111,13 +111,19 @@
                         <!-- form-group para los controles de Nombre -->
                         <div class="form-group">
                             <label for="txtNombre" class="control-label">Nombre</label>
-                            <input type="txt" id="txtNombre" name="txtNombre" value="<%=cliente.getNombre()%>" class="form-control"/><br>
+                            <input type="txt" id="txtNombre" name="txtNombre" value="<%=entidad.getNombre()%>" class="form-control"placeholder="Su nombre..."/><br>
                         </div>
 
                         <!-- form-group para los controles de Cedula -->
                         <div class="form-group">
                             <label for="txtCedula" class="control-label">Cedula</label>
-                            <input type="txt" id="txtCedula" name="txtCedula" value="<%=cliente.getCedula()%>" class="form-control" placeholder="0-0000-0000"/><br>
+                            <input type="txt" id="txtCedula" name="txtCedula" value="<%=entidad.getCedula()%>" class="form-control" placeholder="0-0000-0000"/><br>
+                        </div>
+                        
+                        <!-- form-group para los controles de Correo -->
+                        <div class="form-group">
+                            <label for="txtCorreo" class="control-label">Correo</label>
+                            <input type="txt" id="txtCorreo" name="txtCorreo" value="<%=entidad.getCorreo()%>" class="form-control" placeholder="@mail.com"/><br>
                         </div>
 
 
@@ -126,7 +132,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="submit" id="btnGuardar" value="Guardar" class="btn btn-primary"/> &nbsp;&nbsp;
-                                <input type="button" id="btnRegresar" value="Regresar" onclick="location.href = 'Frm_ListarClientes.jsp'" class="btn btn-secondary"/>
+                                <input type="button" id="btnRegresar" value="Regresar" onclick="location.href = 'Frm_ListarVendedores.jsp'" class="btn btn-secondary"/>
 
                                 <!-- 
                                         El botón Regresar lleva a la página FrmListarClientes.jsp, no estamos haciendo un RESPONSE
@@ -180,8 +186,9 @@
                                     // Si no definimos estas reglas, solamente se aplicarán las reglas que estén definidas
                                     // dentro de cada input (por ejemplo el input se definió como requiered)
 
-                                    txtNombre: {required: true, maxlength: 100},
+                                            txtNombre: {required: true, maxlength: 100},
                                             txtCedula {required: true, maxlength: 9},
+                                            txtCorreo {required: true, maxlength: 100},
                                             // el tamaño anterior podría ser cualquier otro, entre 8 y 11 es sólo un ejemplo
 
 
@@ -192,8 +199,9 @@
                                     },
                                             // Mensajes que deseamos personalizar: 
                                             messages: {
-                                            txtNombre: "El campo de Nombre es obligatorio (max 50 caracteres)",
+                                            txtNombre: "El campo de Nombre es obligatorio (max 100 caracteres)",
                                                     txtCedula "El campo Cedula es obligatorio (debe ser 9 caracteres)",
+                                                    txtCorreo "El campo Correo es obligatorio (max 100 caracteres)",
                                             },
                                             errorElement: 'span'
 

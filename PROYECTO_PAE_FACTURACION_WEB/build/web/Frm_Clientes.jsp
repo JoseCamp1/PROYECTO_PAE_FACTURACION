@@ -32,7 +32,7 @@
                                 <a class="nav-link text-dark" href="FrmListarClientes.jsp">Clientes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="FrmListarFacturas.jsp">Facturación</a>
+                                <a class="nav-link text-dark" href="Frm_ListarFacturas.jsp">Facturación</a>
                             </li>
                         </ul>
                     </div>
@@ -126,7 +126,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="submit" id="btnGuardar" value="Guardar" class="btn btn-primary"/> &nbsp;&nbsp;
-                                <input type="button" id="btnRegresar" value="Regresar" onclick="location.href = 'FrmListarClientes.jsp'" class="btn btn-secondary"/>
+                                <input type="button" id="btnRegresar" value="Regresar" onclick="location.href = 'Frm_ListarClientes.jsp'" class="btn btn-secondary"/>
 
                                 <!-- 
                                         El botón Regresar lleva a la página FrmListarClientes.jsp, no estamos haciendo un RESPONSE

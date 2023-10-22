@@ -68,7 +68,7 @@
                                 se escribió en el campo de Texto.
                         -->
 
-            <form action="FrmListarClientes.jsp" method="post">
+            <form action="Frm_ListarClientes.jsp" method="post">
                 
                         <!-- 
                                 Se utiliza la ACCIÓN y MÉTODOS de HTML (a diferencia de ASP 
@@ -262,38 +262,18 @@
                 }
             %>
             <a href="Frm_Clientes.jsp?idCrearModificar=-1" class="btn btn-primary">Agregar Nuevo Cliente</a> 
-            <a href="FrmListarClientes.jsp" class="btn btn-primary">Actualizar</a>
+            <a href="Frm_ListarClientes.jsp" class="btn btn-primary">Actualizar</a>
             <br><br>
             <a href="index.html" class="btn btn-secondary">Regresar al Index</a>
         </div>
 
         <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        
                         <!-- 
                             "min" minificado es que esta en una sola linea. 
                             El .map igual esta minificado, pero ademas está en la capacidad de decir 
                             (en caso de haber un error) en cuál línea está el error.
                         -->
-
+                        
     </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

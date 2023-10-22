@@ -1,7 +1,7 @@
 package Servlets;
 
-import Capa_Entidades.Cliente;
-import Capa2_LogicaNegocio.LNCliente;
+import Capa_Entidades.Vendedor;
+import Capa2_LogicaNegocio.LNVendedor;
 import java.io.*; // Se necesita para crear una variable OUT y poder imprimir en pantalla
 import java.net.URLEncoder; // Para hacer codificación de caracteres 
 import javax.servlet.ServletException;
@@ -9,9 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 // Definir la RUTA de acceso al Servlet dentro de la aplicación:
-@WebServlet("/EliminarCliente") 
+@WebServlet("/EliminarVendedor") 
 
-public class EliminarCliente extends HttpServlet {
+public class EliminarVendedor extends HttpServlet {
     //  Sobrescribimos el método doGet, para asignarle un comportamiento
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{ 
@@ -22,17 +22,17 @@ public class EliminarCliente extends HttpServlet {
         PrintWriter out = response.getWriter(); // para poder escribir en el HTML
         
         try{
-            LNCliente logica = new LNCliente();
+            LNVendedor logica = new LNVendedor();
             
             String id = request.getParameter("idEliminar"); 
             // obtiene el parámetro del QUERY STRING 
             // SIEMPRE retorna un String
             
             int codigo = Integer.parseInt(id);
-            Cliente cliente = new Cliente();
-            cliente.setId(codigo);
+            Vendedor entidad = new Vendedor();
+            entidad.setId(codigo);
             
-            int resultado = logica.Eliminar(cliente);
+            int resultado = logica.Eliminar(entidad);
             /*  Si creáramos un método que elimine y sólo reciba un int, nos ahorraríamos
                 crear la entidad. Pero en este ejemplo sólo tenemos un método que 
                 eliminar que recibe una entidad.             
@@ -50,7 +50,7 @@ public class EliminarCliente extends HttpServlet {
             // Utilizamos el objeto intrínseco RESPONSE para responder:
             // Redireccionando a la página FrmListarClientes y 
             // enviando por parámetro el mensaje. 
-            response.sendRedirect("Frm_ListarClientes.jsp?mensajeServletEliminarCliente=" + mensaje + "&resultado=" + resultado);
+            response.sendRedirect("Frm_ListarVendedores.jsp?mensajeServletEliminarVendedor=" + mensaje + "&resultado=" + resultado);
         }
         catch(Exception ex){
             out.print(ex.getMessage()); // imprime en el HTML

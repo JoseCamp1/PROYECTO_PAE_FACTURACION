@@ -102,11 +102,10 @@ public class ADCliente {
                 al finalizar el método se destruye la variable automáticamente. 
                 Es decir la conexión se cierra automáticamente al cerrarse finalizar
                 el método. Pero la cerramos por buenas costumbres! 
-             */
+           */
+            
         }
-        return resultado;
-        
-        
+        return resultado;        
     }//insertar
 
     /*
@@ -153,7 +152,7 @@ public class ADCliente {
      */
     // Utilizando un procedimiento almacenado
     /*
-        IMPORTANTE: En este caso el SP se encarga de verificar por ejemplo que el cliente
+        IMPORTANTE: En este caso el SP se encarga de verificar por ejemplo que el entidad
         que se desea eliminar NO tenga factura asociadas. Este tipo de lógica del negocio
         deberíamos programarla aquí en código Java, en caso que no tuviéramos un SP
         que verificara todo eso. Es más FÁCIL manejarlo con SP en la BD, porque desde 
@@ -162,7 +161,7 @@ public class ADCliente {
         persona decide cómo le parece mejor crear sus soluciones, o bien la forma 
         en que lo maneje cada empresa de desarrollo. 
      */
-    public int Eliminar(Cliente EntidadCliente) throws Exception {
+    public int Eliminar(Cliente entidad) throws Exception {
         CallableStatement cs = null;//Se usa CallableStatement porque estoy "llamando" a un procedimiento almacenado
         int resultado = -1;
         Connection _conexion = null;
@@ -173,7 +172,7 @@ public class ADCliente {
             cs = _conexion.prepareCall("{call ELIMINAR_CLIENTE(?,?)}");
 
             // 1) Registrar los parámetros
-            cs.setInt(1, EntidadCliente.getId());
+            cs.setInt(1, entidad.getId());
             cs.setString(2, _mensaje);
 
             // 2) Registrar los parámetros de SALIDA
@@ -190,10 +189,10 @@ public class ADCliente {
 //            }
             /*
            En este caso el _mensaje preferimos RECUPERARLO directamente del SP de la BD
-           porque podría ser que indique que no se puede eliminar el cliente porque
+           porque podría ser que indique que no se puede eliminar el entidad porque
            tiene facturas asociadas, u otro mensaje de la BD. 
              */
-        }//try
+        }//try//try
         catch (Exception ex) {
             //resultado = -1;
             throw ex;
@@ -255,7 +254,7 @@ public class ADCliente {
     /*
         MÉTODO 5: Listar Registros
         Recibe: condición (String)
-        Retorna: un LISTA de objetos cliente
+        Retorna: un LISTA de objetos entidad
      */
     public List<Cliente> ListarRegistros(String Condicion) throws Exception {
         ResultSet rs = null;
@@ -301,9 +300,9 @@ public class ADCliente {
 
         // La idea es que la Condición que ingresa permita conseguir un registro único y no varios!
         // Por tanto al llamar a este método debemos garantizar que SIEMPRE le enviemos en la condición
-        // el ID de un cliente. 
+        // el ID de un entidad. 
         ResultSet rs = null;
-        Cliente cliente = new Cliente();
+        Cliente entidad = new Cliente();
         String sentencia;
         Connection _conexion = null;
         try {
@@ -312,20 +311,20 @@ public class ADCliente {
 
             sentencia = "SELECT ID_CLIENTE,NOMBRE_COMPLETO,CEDULA FROM CLIENTES";
             if (!Condicion.equals("")) {
-                sentencia = String.format("%s WHERE %s", sentencia, Condicion);
+                sentencia = String.format("%S WHERE %S", sentencia, Condicion);
             }
             rs = st.executeQuery(sentencia);
 
             // Con If y no While, por si esta consulta hubiera retornado varios registros, 
             // lee solamene uno (el primero).
-            // En teoría eso nunca va a pasar si en la condición el método recibe el ID de un cliente
+            // En teoría eso nunca va a pasar si en la condición el método recibe el ID de un entidad
             if (rs.next()) {
-                cliente.setId(rs.getInt(1));
-                cliente.setNombre(rs.getString(2));
-                cliente.setCedula(rs.getString(3));
-                cliente.setExiste(true);
+                entidad.setId(rs.getInt(1));
+                entidad.setNombre(rs.getString(2));
+                entidad.setCedula(rs.getString(3));
+                entidad.setExiste(true);
             } else {
-                cliente.setExiste(false);
+                entidad.setExiste(false);
             }
         } catch (Exception ex) {
             throw ex;
@@ -334,7 +333,7 @@ public class ADCliente {
                 ClaseConexion.close(_conexion);
             }
         }
-        return cliente;
+        return entidad;
     }
 
 }
