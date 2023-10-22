@@ -23,7 +23,7 @@ public class ADCliente {
     
     // MÉTODOS ___________________________________________________
     // Este método va a llamar a un Procedimiento Almacenado
-//    public int Insertar(Cliente cliente) throws Exception {
+//    public int Insertar(entidad entidad) throws Exception {
 //        CallableStatement CS = null; // para llamar a un procedimiento almacenado
 //        int resultado = -1;
 //        Connection _conexion = null;
@@ -35,9 +35,9 @@ public class ADCliente {
 //            // llamanos el procedimiento almacenado
 //
 //            // 1) Registrar los parámetros
-//            CS.setInt(1, cliente.getId());
-//            CS.setString(2, cliente.getNombre());
-//            CS.setString(3, cliente.getCedula());
+//            CS.setInt(1, entidad.getId());
+//            CS.setString(2, entidad.getNombre());
+//            CS.setString(3, entidad.getCedula());
 //            CS.setString(4, _mensaje);
 //            // 2) Registrar los parámetros de SALIDA
 //            CS.registerOutParameter(1, Types.INTEGER);
@@ -64,7 +64,7 @@ public class ADCliente {
 //                un SP tiene que retornar mensajes). 
 //             */
 //            //if(resultado > 0){
-//            //    _mensaje = "cliente insertado satisfactoriamente";
+//            //    _mensaje = "entidad insertado satisfactoriamente";
 //            //}
 //        } catch (Exception ex) {
 //            //resultado = -1; // ya está definido desde el inicio en -1
@@ -78,17 +78,15 @@ public class ADCliente {
 //        return resultado;
 //    } // método insertar 
     
-    public int Insertar(Cliente Cliente) throws Exception {
+    public int Insertar(Cliente entidad) throws Exception {
         int resultado = -1;
         Connection _conexion = null;
 
         try {
             _conexion = ClaseConexion.getConnection();
            PreparedStatement ps = _conexion.prepareStatement("INSERT INTO CLIENTES (NOMBRE_COMPLETO, CEDULA) VALUES (?, ?)");
-
-            ps.setString(1, Cliente.getNombre());
-            ps.setString(2, Cliente.getCedula());
-            //ps.setInt(3, Cliente.getId());
+            ps.setString(1, entidad.getNombre());
+            ps.setString(2, entidad.getCedula());            
             resultado = ps.executeUpdate();
         } catch (Exception ex) {
             //resultado = -1;
@@ -109,7 +107,7 @@ public class ADCliente {
         return resultado;
         
         
-    }//Modificar
+    }//insertar
 
     /*
         MÉTODO 2: Modificar _________________________________________
@@ -117,7 +115,7 @@ public class ADCliente {
         Retorna: un entero (la cantidad de registros (filas) afectados)
      */
     // No utiliza procedimientos almacenados:
-    public int Modificar(Cliente EntidadCliente) throws Exception {
+    public int Modificar(Cliente entidad) throws Exception {
         int resultado = -1;
         Connection _conexion = null;
 
@@ -125,9 +123,9 @@ public class ADCliente {
             _conexion = ClaseConexion.getConnection();
             PreparedStatement ps = _conexion.prepareStatement("UPDATE CLIENTES SET NOMBRE_COMPLETO=?, CEDULA=? WHERE ID_CLIENTE = ?");
 
-            ps.setString(1, EntidadCliente.getNombre());
-            ps.setString(2, EntidadCliente.getCedula());
-            ps.setInt(3, EntidadCliente.getId());
+            ps.setString(1, entidad.getNombre());
+            ps.setString(2, entidad.getCedula());
+            ps.setInt(3, entidad.getId());
             resultado = ps.executeUpdate();
         } catch (Exception ex) {
             //resultado = -1;
