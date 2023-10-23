@@ -176,7 +176,7 @@ public class ADProducto {
 
             // Recorremos el ResultSet agregando cada Registro a la Lista
             while (rs.next()) {
-                entidad = new Producto(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getFloat(4),rs.getInt(5));
+                entidad = new Producto(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getInt(4),rs.getInt(5));
                 lista.add(entidad);
             }
         } catch (Exception ex) {

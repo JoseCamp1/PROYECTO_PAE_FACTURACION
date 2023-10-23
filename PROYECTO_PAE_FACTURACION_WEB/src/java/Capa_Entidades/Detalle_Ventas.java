@@ -3,44 +3,44 @@ package Capa_Entidades;
 
 public class Detalle_Ventas {
     
-     //atributos
-    private int id;
+     //atributos   
     private int id_Venta;
     private int id_Producto;
+    private String nombreProducto; // No mapea ningún campo de la BD    
     private int cantidad;     
-    private float subtotal;
+    private float precio;
     private boolean existe;
     
+     /*
+        Este último no pertenece a la tabla DetalleFactura, pero vamos a incluirlo
+        para que no tengamos que estar haciendo consultas adicionales
+        para saber el nombre del producto. 
+        Esto demuestra que es válido que al construir nuestras entidades podemos
+        agregar más datos adicionales a los campos de la BD de esa tabla, por
+        ejemplo como ya lo hacemos con el atributo "Existe"
+    */
 
     //constructores
      public Detalle_Ventas() {
-         id=0;
          id_Venta=0;
          id_Producto=0;
+         nombreProducto="";
          cantidad=0;         
-         subtotal=0;
+         precio=0;
          existe=false;
     }
-    public Detalle_Ventas(int id, int id_Venta, int id_Producto, int cantidad, float subtotal) {
-        this.id = id;
+    public Detalle_Ventas( int id_Venta, int id_Producto,String nombreProducto, int cantidad, float precio) {
         this.id_Venta = id_Venta;
         this.id_Producto = id_Producto;
+        this.nombreProducto=nombreProducto;
         this.cantidad = cantidad;        
-        this.subtotal = subtotal;
-        this.existe = existe;
+        this.precio = precio;
+        existe = true; // no se recibe como atributo, se configura por defecto
     }
     
     //getters y setters
 
-   public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId_Venta() {
+     public int getId_Venta() {
         return id_Venta;
     }
 
@@ -64,12 +64,12 @@ public class Detalle_Ventas {
         this.cantidad = cantidad;
     }
     
-    public float getSubtotal() {
-        return subtotal;
+    public float  getPrecio() {
+        return precio;
     }
 
-    public void setSubtotal(float subtotal) {
-        this.subtotal = subtotal;
+    public void setPrecio(float precio) {
+        this.precio = precio;
     }
 
     public boolean isExiste() {
@@ -78,6 +78,14 @@ public class Detalle_Ventas {
 
     public void setExiste(boolean existe) {
         this.existe = existe;
+    }
+    
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
     
 }
