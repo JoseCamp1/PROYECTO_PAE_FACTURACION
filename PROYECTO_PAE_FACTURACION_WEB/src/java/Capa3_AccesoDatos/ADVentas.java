@@ -172,44 +172,46 @@ public class ADVentas {
         return idfactura;
     } // fin Modificar ID del cliente
     
-    public List<Ventas> ListarRegistros(String Condicion) throws Exception{
-        ResultSet RS = null;
-        Ventas entidad;
-        List<Ventas> ListaF = new ArrayList<>();
-        Connection _Conexion = null;
-        try {
-            _Conexion = ClaseConexion.getConnection();
-            Statement ST = _Conexion.createStatement();
-            String Sentencia;
-            
-            Sentencia = "SELECT ID_VENTA, METODOPAGO, FECHA, V.ID_CLIENTE, C.NOMBRE_COMPLETO, V.ID_VENDEDOR, VV.NOMBRE_COMPLETO, TOTAL,ESTADO\n" +
-                                "FROM VENTAS V\n" +
-                                "INNER JOIN CLIENTES C ON C.ID_CLIENTE = V.ID_CLIENTE\n" +
-                                "INNER JOIN VENDEDORES VV ON VV.ID_VENDEDOR = V.ID_VENDEDOR";
-            if(!Condicion.equals("")){
-                Sentencia = String.format("%S WHERE %S", Sentencia, Condicion);
-            }
-            RS = ST.executeQuery(Sentencia);
-            while(RS.next()){
-                entidad = new Ventas(RS.getInt("ID_VENTA"),
-                        RS.getString("METODOPAGO"),
-                        RS.getDate("FECHA"),
-                        RS.getInt("ID_CLIENTE"),
-                        RS.getString("NOMBRE_COMPLETO"),
-                        RS.getInt("ID_VENDEDOR"),
-                        RS.getString("NOMBRE_COMPLETO"),
-                        RS.getInt("TOTAL"),
-                        RS.getString("ESTADO"));                     
-                ListaF.add(entidad);
-            }
+public List<Ventas> ListarRegistros(String Condicion) throws Exception {
+    ResultSet RS = null;
+    Ventas entidad;
+    List<Ventas> ListaF = new ArrayList<>();
+    Connection _Conexion = null;
+    try {
+        _Conexion = ClaseConexion.getConnection();
+        Statement ST = _Conexion.createStatement();
+        String Sentencia;
 
-            } catch (Exception ex) {
-                throw ex;
-            }finally{
-            if(_Conexion != null) ClaseConexion.close(_Conexion);
+        Sentencia = "SELECT V.ID_VENTA, V.METODOPAGO, V.FECHA, V.ID_CLIENTE, C.NOMBRE_COMPLETO AS NOMBRE_CLIENTE, V.ID_VENDEDOR, VV.NOMBRE_COMPLETO AS NOMBRE_VENDEDOR, V.TOTAL, V.ESTADO " +
+                    "FROM VENTAS V " +
+                    "INNER JOIN CLIENTES C ON C.ID_CLIENTE = V.ID_CLIENTE " +
+                    "INNER JOIN VENDEDORES VV ON VV.ID_VENDEDOR = V.ID_VENDEDOR";
+
+        if (!Condicion.equals("")) {
+            Sentencia = String.format("%S WHERE %S", Sentencia, Condicion);
         }
-        return ListaF;
-    } // fin Listar Registros
+        RS = ST.executeQuery(Sentencia);
+        while (RS.next()) {
+            entidad = new Ventas(RS.getInt("ID_VENTA"),
+                    RS.getString("METODOPAGO"),
+                    RS.getDate("FECHA"),
+                    RS.getInt("ID_CLIENTE"),
+                    RS.getString("NOMBRE_CLIENTE"),
+                    RS.getInt("ID_VENDEDOR"),
+                    RS.getString("NOMBRE_VENDEDOR"),
+                    RS.getInt("TOTAL"),
+                    RS.getString("ESTADO"));
+            ListaF.add(entidad);
+        }
+
+    } catch (Exception ex) {
+        throw ex;
+    } finally {
+        if (_Conexion != null) ClaseConexion.close(_Conexion);
+    }
+    return ListaF;
+} // fin Listar Registros
+   
     
      // retorna una factura 
     public Ventas ObtenerRegistro(String Condicion) throws Exception{
@@ -217,9 +219,9 @@ public class ADVentas {
         Ventas entidad = new Ventas();
         String Sentencia;
         Connection _Conexion = null;
-        Sentencia = "SELECT ID_VENTA, METODOPAGO, FECHA, V.ID_CLIENTE, C.NOMBRE_COMPLETO, V.ID_VENDEDOR, VV.NOMBRE_COMPLETO, TOTAL,ESTADO\n" +
-                            "FROM VENTAS V\n" +
-                            "INNER JOIN CLIENTES C ON C.ID_CLIENTE = V.ID_CLIENTE\n" +
+        Sentencia = "SELECT V.ID_VENTA, V.METODOPAGO, V.FECHA, V.ID_CLIENTE, C.NOMBRE_COMPLETO AS NOMBRE_CLIENTE, V.ID_VENDEDOR, VV.NOMBRE_COMPLETO AS NOMBRE_VENDEDOR, V.TOTAL, V.ESTADO " +
+                            "FROM VENTAS V " +
+                            "INNER JOIN CLIENTES C ON C.ID_CLIENTE = V.ID_CLIENTE " +
                             "INNER JOIN VENDEDORES VV ON VV.ID_VENDEDOR = V.ID_VENDEDOR";
         if(!Condicion.equals("")){
                 Sentencia = String.format("%S WHERE %S", Sentencia, Condicion);
@@ -233,9 +235,9 @@ public class ADVentas {
                 entidad.setMetodoPago(RsDatos.getString("METODOPAGO"));
                 entidad.setFecha(RsDatos.getDate("FECHA"));
                 entidad.setId_Cliente(RsDatos.getInt("ID_CLIENTE"));
-                entidad.setNombreCliente(RsDatos.getString("NOMBRE_COMPLETO"));
+                entidad.setNombreCliente(RsDatos.getString("NOMBRE_CLIENTE"));
                 entidad.setId_Vendedor(RsDatos.getInt("ID_VENDEDOR"));
-                entidad.setNombreVendedor(RsDatos.getString("NOMBRE_COMPLETO"));
+                entidad.setNombreVendedor(RsDatos.getString("NOMBRE_VENDEDOR"));
                 entidad.setTotal(RsDatos.getFloat("TOTAL"));
                 entidad.setEstado(RsDatos.getString("ESTADO"));
                 entidad.setExiste(false);

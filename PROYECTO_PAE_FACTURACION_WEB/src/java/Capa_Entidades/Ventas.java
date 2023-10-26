@@ -43,12 +43,12 @@ public class Ventas {
         existe=false;
     }
     
-    public Ventas(int id, String metodoPago, Date fecha, int id_Cliente,String NombreCliente, int id_Vendedor,String nombreVendedor, float total,String estado) {
+    public Ventas(int id, String metodoPago, Date fecha, int id_Cliente,String nombreCliente, int id_Vendedor,String nombreVendedor, float total,String estado) {
         this.id = id;
         this.metodoPago = metodoPago;
         this.fecha = fecha;
         this.id_Cliente = id_Cliente;
-        this.nombreCliente=NombreCliente;
+        this.nombreCliente=nombreCliente;
         this.id_Vendedor = id_Vendedor;
         this.nombreVendedor=nombreVendedor;
         this.total = total;
