@@ -14,37 +14,37 @@
         <title>Facturacion</title>
     </head>
     <body>
-        
+
         <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" href="index.html">Sistema Facturación <i class="fas fa-tasks"></i></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="index.html">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="Frm_ListarProductos.jsp">Productos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="Frm_ListarClientes.jsp">Clientes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="Frm_ListarVendedores.jsp">Vendedores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="Frm_ListarFacturas.jsp">Facturación</a>
-                        </li>
-                    </ul>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" href="index.html">Sistema Facturación <i class="fas fa-tasks"></i></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="index.html">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="Frm_ListarProductos.jsp">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="Frm_ListarClientes.jsp">Clientes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="Frm_ListarVendedores.jsp">Vendedores</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="Frm_ListarFacturas.jsp">Facturación</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-        
+            </nav>
+        </header>
+
         <div class="container">
             <div class="row">
                 <div class="col-10"><h1>Facturación</h1></div>
@@ -69,7 +69,7 @@
                     java.sql.Date fechasql = new java.sql.Date(fecha.getTime());
                     EntidadFactura.setFecha(fechasql);
                 }
-                if(EntidadFactura.getId()==0){
+                if (EntidadFactura.getId() == 0) {
                     EntidadFactura.setId(-1);
                     Date fecha = new Date();
                     java.sql.Date fechasql = new java.sql.Date(fecha.getTime());
@@ -93,59 +93,66 @@
                     </div>
 
                 </div>
-                               
+
                 <br/>
-                
+
                 <div class="form-group">
                     <div class="input-group">
                         <input type="hidden" id="txtIdCliente" name="txtIdCliente" value="<%=EntidadFactura.getId_Cliente()%>"
                                readonly="" class="form-control"/>
-                        
+
                         <input type="text" id="txtNombreCliente" name="txtNombreCliente" 
                                value="<%=EntidadFactura.getNombreCliente()%>" readonly="" class="form-control"
                                placeholder="Seleccione un cliente"/>&nbsp;&nbsp;
-                        
+
                         <a id="btnbuscar" class="btn btn-success" data-toggle="modal"
-                                       data-target="#buscarCliente"><i class="fas fa-search"></i></a>
+                           data-target="#buscarCliente"><i class="fas fa-search"></i></a>
                     </div>
                 </div>
-                               
-                 <div class="form-group">
+
+                <div class="form-group">
                     <div class="input-group">
                         <input type="hidden" id="txtIdVendedor" name="txtIdVendedor" value="<%=EntidadFactura.getId_Vendedor()%>"
                                readonly="" class="form-control"/>
-                        
+
                         <input type="text" id="txtNombreVendedor" name="txtNombreVendedor" 
                                value="<%=EntidadFactura.getNombreVendedor()%>" readonly="" class="form-control"
                                placeholder="Seleccione un Vendedor"/>&nbsp;&nbsp;
-                        
+
                         <a id="btnbuscar" class="btn btn-success" data-toggle="modal"
-                                       data-target="#buscarVendedor"><i class="fas fa-search"></i></a>
+                           data-target="#buscarVendedor"><i class="fas fa-search"></i></a>
                     </div>
-                               
+
                 </div>              
-                               
+
                 <hr/> <!-- Inicia el detalle de factura -->
                 <div class="form-group">
                     <div class="input-group">
-                        
+
                         <input type="hidden" id="txtIdProducto" name="txtIdProducto" value="" readonly="" class="form-control"/>
-                        
+
                         <input type="text" id="txtdescripcion" name="txtdescripcion" value="" class="form-control" readonly
                                placeholder="Seleccione un producto"/> &nbsp;&nbsp;
-                        
+
                         <a id="btnBuscarP" class="btn btn-success" data-toggle="modal" data-target="#buscarProducto">
-                            <i class="fas fa-search"></i></a>&nbsp;&nbsp;
+                            <i class="fas fa-search"></i></a>&nbsp;&nbsp;                            
+
+                            <input type="text" id="txtmetodoPago" name="txtmetodoPago" list="metodos" class="form-control" placeholder="Metodo de Pago" value="Efectivo">
+                            <datalist id="metodos">
+                                <option value="Sinpe">
+                                <option value="Efectivo">
+                                <option value="Tarjeta">
+                            </datalist>&nbsp;&nbsp;
                             
                         <input type="number" id="txtcantidad" name="txtcantidad" value="" class="form-control" 
                                placeholder="Cantidad"/> &nbsp;&nbsp;
-                        
+
                         <input type="number" id="txtprecio" readonly = "true" name="txtprecio" value="" class="form-control" 
                                placeholder="Precio"/> &nbsp;&nbsp;
 
                         <input type="number" id="txtexistencia"  readonly name="txtexistencia" value="" class="form-control" 
                                placeholder="Existencia"/> 
-                        
+
                     </div>
                 </div>
                 <br/>
@@ -154,6 +161,7 @@
                 </div>
             </form>
             <hr/>
+
             <!-- Mostrar detalle de factura -->
             <h5>Detalle de Factura</h5>
             <table id="DetalleFactura" class="table">
@@ -200,11 +208,11 @@
                     <%
                             }// cierre de for
                         } // cierre del if
-%>
-                </tbody>
+                    %>
+                </tbody>                
             </table>
             <div class="float-right" >
-                <p class="text-danger h5" >Total = <%= total%> </p>
+                <p class="text-danger h5" id="txtTotal">Total = <%= total%> </p>
             </div>
             <br><br>
             <%
@@ -213,7 +221,7 @@
                     out.print("<p class='text-danger'>" + new String(request.getParameter("msgFac").getBytes("ISO-8859-1"), "UTF-8") + "</p>");
                 }
             %>
-            
+
             <input type="button" id="BtnCancelar" value="Realizar Facturacion"
                    onclick="location.href = 'CancelarFactura?txtnumFactura=' +<%= EntidadFactura.getId()%>"
                    class="btn btn-success"/>
@@ -265,7 +273,7 @@
                                 <%}%>
                             </tbody>
                         </table>
-                            
+
                     </div> <!-- modal body -->
                     <div class="modal-footer">
                         <button class="btn btn-warning" type="button" data-dismiss="modal" onclick="Limpiar()">
@@ -275,8 +283,8 @@
                 </div> <!-- modal content -->
             </div> <!-- mnodal dialog -->
         </div> <!-- modal -->
-        
-         <!-- Modal de Vendedores -->
+
+        <!-- Modal de Vendedores -->
         <div class="modal" id="buscarVendedor" tabindex="1" role="dialog" aria-labelledby="tituloVentana">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -318,7 +326,7 @@
                                 <%}%>
                             </tbody>
                         </table>
-                            
+
                     </div> <!-- modal body -->
                     <div class="modal-footer">
                         <button class="btn btn-warning" type="button" data-dismiss="modal" onclick="LimpiarVendedor()">
@@ -346,7 +354,7 @@
                             <thead>
                                 <tr>
                                     <th>Código</th>
-                                    <th>Descripción</th>
+                                    <th>Nombre</th>
                                     <th>Precio</th>
                                     <!--<th>Existencia</th>-->
                                     <th>Seleccionar</th>
@@ -361,7 +369,7 @@
                                 %>
                                 <tr>
                                     <%int codigoProducto = registroP.getId();
-                                        String nombreProducto = registroP.getDescripcion();
+                                        String nombreProducto = registroP.getNombre();
                                         //double precioDouble = registroP.getPrecio();
                                         //int precio = (int) precioDouble;
                                         double precio = registroP.getPrecio();
@@ -398,7 +406,7 @@
         <script src="lib/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
         <script src="lib/DataTables/datatables.min.js" type="text/javascript"></script>
         <script src="lib/DataTables/DataTables-1.10.21/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-       
+
         <script>
 
                                     //hacer que la lista de clientes se comporte como un datatable
@@ -428,7 +436,7 @@
 
                                             }
                                         });
-                                        
+
                                         $('#tablaVendedores').dataTable({
                                             "lengthMenu": [[5, 15, 15, -1], [5, 10, 15, "All"]],
                                             "language": {
@@ -447,7 +455,7 @@
 
                                             }
                                         });
-                                        
+
                                         //tabla de productos
                                         $('#tablaProductos').dataTable({
                                             "lengthMenu": [[5, 15, 15, -1], [5, 10, 15, "All"]],
@@ -476,19 +484,19 @@
                                         $("#txtIdCliente").val(idCliente);
                                         $("#txtNombreCliente").val(nombreCliente);
                                     }
-                                    
-                                     //seleccionar vendedor
+
+                                    //seleccionar vendedor
                                     function SeleccionarVendedor(idVendedor, nombreVendedor) {
                                         $("#txtIdVendedor").val(idVendedor);
                                         $("#txtNombreVendedor").val(nombreVendedor);
                                     }
-                                    
+
                                     //seleccionar producto
-                                    function SeleccionarProducto(idProducto, Descripcion, Precio,Existencia ) {
+                                    function SeleccionarProducto(idProducto, Descripcion, Precio, Existencia) {
                                         $("#txtIdProducto").val(idProducto);
                                         $("#txtdescripcion").val(Descripcion);
                                         $("#txtprecio").val(Precio);
-                                        $("#txtexistencia").val(Existencia);                                        
+                                        $("#txtexistencia").val(Existencia);
                                         $("#txtcantidad").focus();
                                     }
 
@@ -497,13 +505,13 @@
                                         $("#txtIdCliente").val("");
                                         $("#txtNombreCliente").val("");
                                     }
-                                    
+
                                     //seleccionar cliente
                                     function LimpiarVendedor() {
                                         $("#txtIdVendedor").val("");
                                         $("#txtNombreVendedor").val("");
                                     }
-                                    
+
                                     //seleccionar producto
                                     function LimpiarProducto() {
                                         $("#txtIdProducto").val("");

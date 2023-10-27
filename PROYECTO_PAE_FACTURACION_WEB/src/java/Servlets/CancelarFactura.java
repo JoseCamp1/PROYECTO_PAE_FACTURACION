@@ -29,7 +29,7 @@ public class CancelarFactura extends HttpServlet {
         try {
             LNVentas Logica=new LNVentas();
             int idFactura=Integer.parseInt(request.getParameter("txtnumFactura"));
-            Ventas EntidadFactura=Logica.ObtenerRegistro("Num_Factura="+idFactura);
+            Ventas EntidadFactura=Logica.ObtenerRegistro("ID_VENTA="+idFactura);
             EntidadFactura.setEstado("Cancelada");
             Logica.ModificarEstado(EntidadFactura);
             response.sendRedirect("Frm_Facturar.jsp?txtnumFactura=-1");

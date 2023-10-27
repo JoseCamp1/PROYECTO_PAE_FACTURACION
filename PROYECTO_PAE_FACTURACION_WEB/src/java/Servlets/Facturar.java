@@ -28,9 +28,11 @@ public class Facturar extends HttpServlet {
              Detalle_Ventas EntidadDetalle = new Detalle_Ventas();
             int resultado;
             String mensaje="";
+            
             //crear entidad de factura
             if(request.getParameter("txtNombreCliente")!=null &&
-                    !request.getParameter("txtNombreCliente").equals("")){
+                    !request.getParameter("txtNombreCliente").equals("") && request.getParameter("txtNombreVendedor")!=null &&
+                    !request.getParameter("txtNombreVendedor").equals("")){
                 
                 EntidadFactura.setId(Integer.parseInt(request.getParameter("txtnumFactura")));
                 
@@ -46,7 +48,7 @@ public class Facturar extends HttpServlet {
                 
                 EntidadFactura.setId_Vendedor(Integer.parseInt(request.getParameter("txtIdVendedor")));
                 
-                EntidadFactura.setTotal(Float.parseFloat(request.getParameter("txtTotal")));         
+                EntidadFactura.setTotal(0);         
                 
                 EntidadFactura.setEstado("Pendiente");
                 

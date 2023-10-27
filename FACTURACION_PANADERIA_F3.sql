@@ -118,64 +118,64 @@ CREATE TABLE DETALLE_COMPRAS (
 -- Insertar datos en la tabla CLIENTES
 INSERT INTO CLIENTES (NOMBRE_COMPLETO, CEDULA) VALUES
 ('Cliente Default', '999999999'),
-('Juan Pérez Pérez', '111111111'),
-('Ana Sánchez Sánchez', '222222222'),
-('María Rodríguez Rodríguez', '333333333'),
-('Pedro Gómez Gómez', '444444444'),
-('Luisa Fernández Fernández', '555555555');
+('Juan Perez', '111111111'),
+('Ana Sanchez', '222222222'),
+('Maria Rodriguez', '333333333'),
+('Pedro Gomez', '444444444'),
+('Luisa Fernandez', '555555555');
 
 -- Insertar datos en la tabla VENDEDORES
 INSERT INTO VENDEDORES (NOMBRE_COMPLETO, CEDULA, CORREO_ELECTRONICO) VALUES
-('Carlos González González', '999999999', 'carlos@example.com'),
-('Laura Martínez Martínez', '888888888', 'laura@example.com'),
-('Javier Ramírez Ramírez', '777777777', 'javier@example.com'),
-('Sofía López López', '666666666', 'sofia@example.com'),
-('Roberto Herrera Herrera', '555555555', 'roberto@example.com');
+('Carlos Gonzalez', '666666666', 'carlos@example.com'),
+('Laura Martinez', '777777777', 'laura@example.com'),
+('Marcos Ramirez', '888888888', 'javier@example.com'),
+('Sofia Lopez', '123123123', 'sofia@example.com'),
+('Roberto Herrera', '456456456', 'roberto@example.com');
 
 
 -- Insertar datos en la tabla PRODUCTOS
 INSERT INTO PRODUCTOS (NOMBRE, DESCRIPCION, PRECIO, STOCK) VALUES
-('Pan Integral', 'Pan integral de trigo', 2.99, 100),
-('Pan de Avena', 'Pan de avena con pasas', 3.49, 75),
-('Croissant', 'Croissant recién horneado', 1.99, 50),
-('Rosquillas', 'Rosquillas glaseadas', 0.99, 120),
-('Baguette', 'Baguette crujiente', 2.49, 80);
+('Pan Integral', '100% Trigo', 1000, 10),
+('Pan de Avena', 'Avena con pasas', 1010, 10),
+('Croissant', 'Receta especial', 1020, 10),
+('Rosquillas', 'Chocolate,Fresa,Vainilla', 1030, 10),
+('Baguette', 'Tradicional', 1040, 10);
 
 
 -- Insertar datos en la tabla VENTAS
 INSERT INTO VENTAS (METODOPAGO, FECHA, ID_CLIENTE, ID_VENDEDOR, TOTAL, ESTADO) VALUES
-('Tarjeta', '2023-09-01', 1, 1, 15.99,'PENDIENTE'),
-('Efectivo', '2023-09-02', 2, 2, 12.49,'PENDIENTE'),
-('Sinpe', '2023-09-03', 3, 3, 7.99,'PENDIENTE'),
-('Tarjeta', '2023-09-04', 4, 4, 5.99,'PENDIENTE'),
-('Efectivo', '2023-09-05', 5, 5, 10.49,'PENDIENTE');
+('Tarjeta', '2023-09-01', 1, 1, 1000,'Pendiente'),
+('Efectivo', '2023-09-02', 2, 2, 1010,'Pendiente'),
+('Sinpe', '2023-09-03', 3, 3, 1020,'Pendiente'),
+('Tarjeta', '2023-09-04', 4, 4, 1030,'Pendiente'),
+('Efectivo', '2023-09-05', 5, 5, 1040,'Cancelada');
 
 
 -- Insertar datos en la tabla DETALLE_VENTAS
 INSERT INTO DETALLE_VENTAS (ID_VENTA, ID_PRODUCTO, CANTIDAD, PRECIO_VENTA) VALUES
-(1, 1, 3, 8.97),
-(1, 3, 2, 3.98),
-(2, 2, 1, 3.49),
-(3, 4, 4, 23.96),
-(4, 5, 2, 4.98);
+(1, 1, 1, 1000),
+(2, 2, 1, 1010),
+(3, 3, 1, 1020),
+(4, 4, 1, 1030),
+(5, 5, 1, 1040);
 
 
 -- Insertar datos en la tabla COMPRAS
 INSERT INTO COMPRAS (FECHA, PROVEEDOR, TOTAL) VALUES
-('2023-09-01', 'Proveedor A', 50.25),
-('2023-09-02', 'Proveedor B', 35.50),
-('2023-09-03', 'Proveedor C', 75.30),
-('2023-09-04', 'Proveedor D', 42.75),
-('2023-09-05', 'Proveedor E', 28.90);
+('2023-09-01', 'Proveedor A', 500),
+('2023-09-02', 'Proveedor B', 1000),
+('2023-09-03', 'Proveedor C', 1500),
+('2023-09-04', 'Proveedor D', 2000),
+('2023-09-05', 'Proveedor E', 2500);
 
 
 -- Insertar datos en la tabla DETALLE_COMPRAS
 INSERT INTO DETALLE_COMPRAS (ID_COMPRA, NOMBRE, CANTIDAD, SUBTOTAL) VALUES
-(1, 'Harina', 10, 25.00),
-(1, 'Sal', 5, 15.00),
-(2, 'Polvo de Hornear', 3, 15.75),
-(3, 'Aceite', 8, 22.80),
-(4, 'Huevos', 6, 27.00);
+(1, 'Harina', 10, 1000),
+(1, 'Sal', 5, 1000),
+(2, 'Polvo de Hornear', 3, 1000),
+(3, 'Aceite', 8, 1000),
+(4, 'Huevos', 6, 1000);
 
 
 SELECT * FROM CLIENTES
