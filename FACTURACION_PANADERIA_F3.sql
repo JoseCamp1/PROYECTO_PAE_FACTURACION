@@ -67,19 +67,6 @@ CREATE TABLE VENTAS (
         CHECK (METODOPAGO IN ('Sinpe', 'Efectivo', 'Tarjeta'))
 );
 
--- TABLA DE DETALLE DE VENTAS
-
---CREATE TABLE DETALLE_VENTAS (
---    ID_DETALLE INT PRIMARY KEY IDENTITY(1,1),
---    ID_VENTA INT,
---    ID_PRODUCTO INT,
---    CANTIDAD INT CHECK (CANTIDAD >= 0) NOT NULL,
---    SUBTOTAL DECIMAL(10, 2) CHECK (SUBTOTAL >= 0) NOT NULL,
---    FOREIGN KEY (ID_VENTA) REFERENCES VENTAS(ID_VENTA),
---    FOREIGN KEY (ID_PRODUCTO) REFERENCES PRODUCTOS(ID_PRODUCTO)
---);
-
-
 CREATE TABLE DETALLE_VENTAS (
     ID_VENTA INT,
     ID_PRODUCTO INT,
@@ -187,9 +174,9 @@ SELECT * FROM DETALLE_COMPRAS
 SELECT * FROM PRODUCTOS
 
 
---------------------
--- PROCEDIMIENTOS --
---------------------
+----------------------
+-- STORE PROCEDURES --
+----------------------
 
 GO
 CREATE OR ALTER PROCEDURE ELIMINAR_CLIENTE(@ID_CLIENTE INT, @MSJ VARCHAR(200) OUT)
@@ -428,3 +415,133 @@ GO
 --SELECT ID_VENTA,D.ID_PRODUCTO,NOMBRE,CANTIDAD,PRECIO_VENTA 
 --FROM DETALLE_VENTAS D INNER JOIN PRODUCTOS P
 --ON D.ID_PRODUCTO = P.ID_PRODUCTO
+
+GO
+CREATE OR ALTER PROCEDURE ELIMINAR_DETALLE_VENTA(@ID_VENTA INT, @ID_PRODUCTO INT, @MSJ VARCHAR(200) OUT)
+AS
+BEGIN
+    BEGIN TRY
+        IF NOT EXISTS(SELECT 1 FROM VENTAS WHERE ID_VENTA = @ID_VENTA)
+        BEGIN
+            SET @MSJ = 'LA VENTA NO EXISTE';
+        END
+        ELSE
+        BEGIN
+            IF EXISTS(SELECT 1 FROM VENTAS WHERE ID_VENTA = @ID_VENTA AND ESTADO = 'PENDIENTE')
+            BEGIN
+                BEGIN TRAN
+                DELETE FROM DETALLE_VENTAS WHERE ID_VENTA = @ID_VENTA AND ID_PRODUCTO = @ID_PRODUCTO;
+                IF ((SELECT COUNT(ID_PRODUCTO) FROM DETALLE_VENTAS WHERE ID_VENTA = @ID_VENTA) = 0)
+                BEGIN
+                    DELETE FROM VENTAS WHERE ID_VENTA = @ID_VENTA;
+                    SET @MSJ = 'EL DETALLE Y LA VENTA FUERON ELIMINADOS';
+                END
+                ELSE
+                BEGIN
+                    SET @MSJ = 'DETALLE ELIMINADO';
+                END
+                COMMIT;
+            END
+            ELSE
+            BEGIN
+                SET @MSJ = 'LA VENTA NO SE PUEDE MODIFICAR YA QUE SE ENCUENTRA CANCELADA O ANULADA';
+            END
+        END
+    END TRY
+    BEGIN CATCH
+        SET @MSJ = ERROR_MESSAGE();
+        ROLLBACK TRAN;
+    END CATCH
+END;
+GO
+
+--------------
+-- TRIGGERS --
+--------------
+
+GO
+-- Este trigger se ejecutará después de insertar un nuevo registro en DETALLE_VENTAS y reducirá la cantidad de stock del producto correspondiente en la tabla PRODUCTOS.
+CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_STOCK_VENTAS
+ON DETALLE_VENTAS
+AFTER INSERT, UPDATE , DELETE
+AS
+BEGIN
+    -- Obtener el ID del producto y la cantidad vendida del registro insertado
+    DECLARE @ID_PRODUCTO INT, @CANTIDAD INT;
+    SELECT @ID_PRODUCTO = ID_PRODUCTO, @CANTIDAD = CANTIDAD
+    FROM inserted;
+
+    -- Actualizar el stock del producto en la tabla PRODUCTOS
+    UPDATE PRODUCTOS
+    SET STOCK = STOCK - @CANTIDAD
+    WHERE ID_PRODUCTO = @ID_PRODUCTO;
+END;
+GO
+
+-- Este trigger se ejecutará después de insertar o actualizar un registro en la tabla VENTAS y 
+-- recalculará automáticamente el campo TOTAL basado en los SUBTOTAL de los registros en DETALLE_VENTAS asociados a esa venta.
+GO
+CREATE OR ALTER TRIGGER TRIGGER_CALCULAR_TOTAL_VENTA
+ON VENTAS
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    -- Obtener el ID de la venta del registro insertado o actualizado
+    DECLARE @ID_VENTA INT;
+    SELECT @ID_VENTA = ID_VENTA
+    FROM inserted;
+
+    -- Calcular el nuevo total de la venta
+    UPDATE VENTAS
+    SET TOTAL = ISNULL((SELECT SUM(PRECIO_VENTA) FROM DETALLE_VENTAS WHERE ID_VENTA = @ID_VENTA), 0)
+    WHERE ID_VENTA = @ID_VENTA;
+END;
+GO
+
+
+-- Este trigger se ejecutará después de insertar o actualizar un registro en la tabla DETALLE_VENTAS
+-- y recalculará automáticamente el campo TOTAL en la tabla VENTAS basado en los SUBTOTAL de los registros asociados a esa venta.
+GO
+CREATE OR ALTER TRIGGER TRIGGER_ACTUALIZAR_TOTAL_VENTA
+ON DETALLE_VENTAS
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    -- Obtener el ID de la venta del registro insertado, actualizado o eliminado
+    DECLARE @ID_VENTA INT;
+    SELECT @ID_VENTA = ID_VENTA
+    FROM (SELECT ID_VENTA FROM inserted UNION SELECT ID_VENTA FROM deleted) AS VENTAS;
+
+    -- Calcular el nuevo total de la venta
+    UPDATE VENTAS
+    SET TOTAL = ISNULL((SELECT SUM(PRECIO_VENTA) FROM DETALLE_VENTAS WHERE ID_VENTA = @ID_VENTA), 0)
+    WHERE ID_VENTA = @ID_VENTA;
+END;
+GO
+
+
+GO
+CREATE or ALTER TRIGGER TR_ACTUALIZA_INVENTARIO_BORRAR
+ON DETALLE_VENTAS 
+INSTEAD OF DELETE
+AS
+	DECLARE @ID_VENTA INT,
+			@CODIGO_PRODUCTO INT, 
+	        @CANTIDAD_VENDIDA INT,
+			@EXISTENCIA INT
+
+	SELECT @ID_VENTA = ID_VENTA FROM deleted
+	SELECT @CODIGO_PRODUCTO = ID_PRODUCTO FROM deleted
+	SELECT @CANTIDAD_VENDIDA = CANTIDAD FROM deleted
+	
+	SELECT @EXISTENCIA = (SELECT STOCK 
+						  FROM PRODUCTOS P INNER JOIN deleted
+						  ON P.ID_PRODUCTO = deleted.ID_PRODUCTO)
+	UPDATE PRODUCTOS SET STOCK = @EXISTENCIA + @CANTIDAD_VENDIDA WHERE ID_PRODUCTO = @CODIGO_PRODUCTO  
+	DELETE DETALLE_VENTAS WHERE ID_PRODUCTO = @CODIGO_PRODUCTO AND ID_VENTA =  @ID_VENTA
+
+GO
+
+
+
+

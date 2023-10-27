@@ -137,7 +137,7 @@
                         <a id="btnBuscarP" class="btn btn-success" data-toggle="modal" data-target="#buscarProducto">
                             <i class="fas fa-search"></i></a>&nbsp;&nbsp;                            
 
-                            <input type="text" id="txtmetodoPago" name="txtmetodoPago" list="metodos" class="form-control" placeholder="Metodo de Pago" value="Efectivo">
+                            <input type="text" id="txtmetodoPago" name="txtmetodoPago" list="metodos" class="form-control" placeholder="Metodo de Pago">
                             <datalist id="metodos">
                                 <option value="Sinpe">
                                 <option value="Efectivo">
