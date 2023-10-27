@@ -1,7 +1,7 @@
 package Servlets;
 
-import Capa_Entidades.Ventas;
-import Capa2_LogicaNegocio.LNVentas;
+import Capa_Entidades.Detalle_Ventas;
+import Capa2_LogicaNegocio.LNDetalle_Ventas;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/CancelarFactura")
-public class CancelarFactura extends HttpServlet {
+@WebServlet("/EliminarDetalle")
+public class EliminarDetalle extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -27,17 +27,20 @@ public class CancelarFactura extends HttpServlet {
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            LNVentas Logica=new LNVentas();
-            int idFactura=Integer.parseInt(request.getParameter("txtnumFactura"));
-            Ventas EntidadFactura=Logica.ObtenerRegistro("ID_VENTA="+idFactura);
-            EntidadFactura.setEstado("Cancelada");
-            Logica.ModificarEstado(EntidadFactura);
-            response.sendRedirect("Frm_ListarFacturas.jsp?txtnumFactura=-1");
+            LNDetalle_Ventas LogicaDetalle = new LNDetalle_Ventas();
+            int codigo = Integer.parseInt(request.getParameter("idproducto"));
+            int factura = Integer.parseInt(request.getParameter("idfactura"));
+            Detalle_Ventas Entidad = new Detalle_Ventas();
+            Entidad.setId_Producto(codigo);
+            Entidad.setId_Venta(factura);
+            LogicaDetalle.Eliminar(Entidad);
+            if(factura==0){factura=-1;}
+            response.sendRedirect("Frm_Facturar.jsp?txtnumFactura="+factura);
         }
         catch(Exception e){
             out.print(e.getMessage());
         }
-    }// fin processRequest
+    }//fin processRequest
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -79,4 +82,3 @@ public class CancelarFactura extends HttpServlet {
     }// </editor-fold>
 
 }
-

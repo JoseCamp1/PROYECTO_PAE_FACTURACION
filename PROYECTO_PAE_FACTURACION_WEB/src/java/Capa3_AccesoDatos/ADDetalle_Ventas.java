@@ -26,7 +26,7 @@ public class ADDetalle_Ventas {
         Connection _Conexion = null;
         try{
             _Conexion = ClaseConexion.getConnection();
-            CS = _Conexion.prepareCall("{call Eliminar_Detalle(?,?,?)}");
+            CS = _Conexion.prepareCall("{call ELIMINAR_DETALLE_VENTA(?,?,?)}");
             
             CS.setInt(1, entidad.getId_Venta());
             CS.setInt(2, entidad.getId_Producto());

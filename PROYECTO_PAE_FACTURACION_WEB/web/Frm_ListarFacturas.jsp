@@ -45,7 +45,7 @@
         </nav>
     </header>
 
-        <div class="container">
+        <div class="container-fluid">
             <div class="card-header">
                 <h1>Listado de Facturas Pendientes</h1>
             </div>

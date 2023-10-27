@@ -112,7 +112,7 @@ public class ADVentas {
         // O, podria declararse y cerrarse dentro del Try
         try{
             _Conexion = ClaseConexion.getConnection(); 
-            PreparedStatement PS = _Conexion.prepareStatement("UPDATE VENTA SET ESTADO = ? WHERE ID_VENTA = ?");
+            PreparedStatement PS = _Conexion.prepareStatement("UPDATE VENTAS SET ESTADO = ? WHERE ID_VENTA = ?");
             
             PS.setString(1, EntidadFactura.getEstado());
             PS.setInt(2, EntidadFactura.getId());
