@@ -135,7 +135,7 @@ INSERT INTO VENTAS (METODOPAGO, FECHA, ID_CLIENTE, ID_VENDEDOR, TOTAL, ESTADO) V
 ('Efectivo', '2023-09-02', 2, 2, 1010,'Pendiente'),
 ('Sinpe', '2023-09-03', 3, 3, 1020,'Pendiente'),
 ('Tarjeta', '2023-09-04', 4, 4, 1030,'Pendiente'),
-('Efectivo', '2023-09-05', 5, 5, 1040,'Cancelada');
+('Efectivo', '2023-09-05', 5, 5, 1040,'Pendiente');
 
 
 -- Insertar datos en la tabla DETALLE_VENTAS
@@ -217,44 +217,6 @@ BEGIN
     END
 END
 GO
-
-
---CREATE OR ALTER PROCEDURE GUARDAR_CLIENTE(
---    @IDCLIENTE INT OUT,
---    @NOMBRE_COMPLETO VARCHAR(100),
---    @CEDULA VARCHAR(9),
---    @MSJ VARCHAR(200) OUT)
---AS
---BEGIN
---    IF @IDCLIENTE IS NULL
---    BEGIN
---        -- Insertar un nuevo cliente
---        INSERT INTO CLIENTES(NOMBRE_COMPLETO, CEDULA)
---        VALUES (@NOMBRE_COMPLETO, @CEDULA);    
-
---        SET @MSJ = 'CLIENTE INGRESADO';
-
---		SET @IDCLIENTE=IDENT_CURRENT('CLIENTES')
-
---    END
---    ELSE
---    BEGIN
---        -- Actualizar cliente existente
---        UPDATE CLIENTES
---        SET NOMBRE_COMPLETO = @NOMBRE_COMPLETO, CEDULA = @CEDULA
---        WHERE ID_CLIENTE = @IDCLIENTE;
-
---        SET @MSJ = 'CLIENTE MODIFICADO';
---    END
---END
---GO
-
-
---DECLARE @IDCLIENTE INT;
---DECLARE @MSJ VARCHAR(200);
-
----- Para insertar un nuevo cliente
---EXEC GUARDAR_CLIENTE @IDCLIENTE OUT, 'Jose Campos', '206730045', @MSJ OUT;
 
 GO
 CREATE OR ALTER PROCEDURE ELIMINAR_PRODUCTO(@ID_PRODUCTO INT, @MSJ VARCHAR(200) OUT)
@@ -541,7 +503,3 @@ AS
 	DELETE DETALLE_VENTAS WHERE ID_PRODUCTO = @CODIGO_PRODUCTO AND ID_VENTA =  @ID_VENTA
 
 GO
-
-
-
-
