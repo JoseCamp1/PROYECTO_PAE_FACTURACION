@@ -15,6 +15,7 @@ La programación en Java se ha utilizado para la lógica de la aplicación, mien
 
 - Java: Para la lógica de la aplicación.
 - SQL: Para la gestión de la base de datos.
+- Bootstrap: para la interfaz gráfica 
 
 ## Funcionalidades Destacadas
 
