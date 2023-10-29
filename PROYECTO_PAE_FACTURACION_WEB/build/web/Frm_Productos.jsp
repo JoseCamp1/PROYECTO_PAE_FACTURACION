@@ -13,7 +13,7 @@
     </head>
     <body>
         
-         <header>
+        <header>
             <nav class="navbar navbar-expand-lg navbar-success bg-dark navbar-light text-white">
                 <div class="container-fluid">
                     <a class="navbar-brand text-white" href="index.html">La Casita del Pan</a>
@@ -42,12 +42,12 @@
                                 <ul class="dropdown-menu">                    
                                     <li><a class="dropdown-item " href="Frm_ListarFacturas.jsp">Ventas</a></li>
                                     <li><hr class="dropdown-divider"/></li>
-                                    <li><a class="dropdown-item " href="#">Compras</a></li>
+                                    <li><a class="dropdown-item " href="En_Desarrollo.jsp">Compras</a></li>
                                     <li><hr class="dropdown-divider"/></li>
                                 </ul>
                             </li>                     
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="#">Contacto</a>
+                                <a class="nav-link text-white" href="En_Desarrollo.jsp">Contacto</a>
                             </li>     
                     </div>
                 </div>
