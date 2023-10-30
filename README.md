@@ -9,13 +9,13 @@ Este proyecto de Sistema de Facturación se ha desarrollado como parte de un pro
 
 Este sistema de facturación está diseñado para automatizar y agilizar el proceso de venta y control de inventario de productos en una panadería. La aplicación proporciona funcionalidades esenciales para el registro de ventas, la gestión de inventario, la generación de facturas y la administración de clientes y vendedores.
 
-La programación en Java se ha utilizado para la lógica de la aplicación, mientras que SQL se utiliza para la gestión de la base de datos.
+La programación en Java se ha utilizado para la lógica de la aplicación, mientras que SQL se utiliza para la gestión de la base de datos. Además, la parte gráfica ha sido desarrollada con HTML, CSS y Bootstrap para ofrecer una interfaz de usuario profesional y atractiva.
 
 ## Tecnologías Utilizadas
 
 - Java: Para la lógica de la aplicación.
 - SQL: Para la gestión de la base de datos.
-- HTML,CSS,Bootstrap: para la interfaz gráfica 
+- HTML, CSS, Bootstrap: Para el desarrollo de la interfaz gráfica.
 
 ## Funcionalidades Destacadas
 
